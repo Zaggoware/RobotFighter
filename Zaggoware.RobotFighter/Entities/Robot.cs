@@ -194,14 +194,42 @@ namespace Zaggoware.RobotFighter.Entities
             }
         }
 
-        protected Tile InspectTile(Direction direction)
+        protected Tile? InspectTile(Direction direction)
         {
             // Tiles to inspect (R = current robot)
             // T T T
             // T R T
             // T T T
 
-            return new Tile(0, 0, false, null, null);
+            var x = -1;
+            var y = -1;
+
+            if (direction.HasFlag(Direction.Up))
+            {
+                y = this.CurrentTile.Y - 1;
+            }
+
+            if (direction.HasFlag(Direction.Right))
+            {
+                x = this.CurrentTile.X + 1;
+            }
+
+            if (direction.HasFlag(Direction.Down))
+            {
+                y = this.CurrentTile.Y + 1;
+            }
+
+            if (direction.HasFlag(Direction.Left))
+            {
+                x = this.CurrentTile.X - 1;
+            }
+
+            if (x < 0 && y < 0)
+            {
+                return null;
+            }
+
+            return this.world.Tiles[x, y];
         }
 
         protected virtual void OnAttacking(AttackEventArgs args)

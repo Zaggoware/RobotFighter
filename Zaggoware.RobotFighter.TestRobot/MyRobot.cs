@@ -23,18 +23,32 @@ namespace Zaggoware.RobotFighter.TestRobot
 		{
 		    this.ticks++;
 
-		    var tile = this.InspectTile(Direction.Left | Direction.Up);
-
 		    if (this.ticks % 100 == 0)
 		    {
-		        if (this.moves < 5)
+		        if (this.FacingDirection == Direction.Left)
 		        {
-		            this.Move();
-		            this.moves++;
+		            var tile = this.InspectTile(Direction.Up | Direction.Left);
+
+		            if (!tile.HasValue)
+		            {
+		                return;
+		            }
+
+		            if (this.moves < 5 && !tile.Value.IsObstacle)
+		            {
+		                this.Move();
+		                this.moves++;
+		            }
+		            else 
+		            {
+                        this.TurnRight();
+                        this.Move();
+                        this.moves++;
+		            }
 		        }
 		        else
 		        {
-                    this.TurnRight();
+		            this.TurnRight();
 		            this.Move();
 		        }
 		    }
