@@ -37,6 +37,14 @@ namespace Zaggoware.RobotFighter.Entities
             }
         }
 
+	    public Direction FaceDirection
+	    {
+		    get
+		    {
+			    return Robot.FacingDirection;
+		    }
+	    }
+
         internal Robot Robot { get; set; }
     }
 }

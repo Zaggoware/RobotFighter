@@ -10,7 +10,8 @@ using System.Windows.Forms;
 
 namespace Zaggoware.RobotFighter.FormsUI
 {
-    using Zaggoware.RobotFighter.TestRobot;
+	using Zaggoware.RobotFighter.Entities;
+	using Zaggoware.RobotFighter.TestRobot;
 
     public partial class GameForm : Form
     {
@@ -41,7 +42,7 @@ namespace Zaggoware.RobotFighter.FormsUI
 
             const int OffsetX = 10;
             const int OffsetY = 50;
-            const int TileSize = 8;
+            const int TileSize = 16;
 
             for (var x = 0; x < this.game.WorldDescriptor.Width; x++)
             {
@@ -80,6 +81,50 @@ namespace Zaggoware.RobotFighter.FormsUI
                     OffsetY + (robot.Y * TileSize),
                     TileSize,
                     TileSize);
+
+	            RectangleF? facingBounds = null;
+	            float fbWidth = TileSize / 2;
+	            float fbHeight = TileSize / 4;
+
+	            switch (robot.FaceDirection)
+	            {
+					case Direction.Up:
+			            facingBounds = new RectangleF(
+				            OffsetX + (robot.X * TileSize) + (fbWidth / 2),
+				            OffsetY + (robot.Y * TileSize),
+				            fbWidth,
+				            fbHeight);
+			            break;
+
+					case Direction.Right:
+						facingBounds = new RectangleF(
+							OffsetX + (robot.X * TileSize) + TileSize - fbHeight,
+							OffsetY + (robot.Y * TileSize) + (fbWidth / 2),
+							fbHeight,
+							fbWidth);
+						break;
+
+					case Direction.Down:
+						facingBounds = new RectangleF(
+				            OffsetX + (robot.X * TileSize) + (fbWidth / 2),
+				            OffsetY + (robot.Y * TileSize) + TileSize - fbHeight,
+				            fbWidth,
+				            fbHeight);
+			            break;
+
+		            case Direction.Left:
+			            facingBounds = new RectangleF(
+				            OffsetX + (robot.X * TileSize),
+							OffsetY + (robot.Y * TileSize) + (fbWidth / 2),
+				            fbHeight,
+				            fbWidth);
+			            break;
+	            }
+
+	            if (facingBounds.HasValue)
+	            {
+		            e.Graphics.FillRectangle(Brushes.GreenYellow, facingBounds.Value);
+	            }
             }
 
             e.Graphics.DrawString(
