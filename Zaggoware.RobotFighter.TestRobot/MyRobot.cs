@@ -1,57 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Zaggoware.RobotFighter.Entities;
 
 namespace Zaggoware.RobotFighter.TestRobot
 {
-	using Zaggoware.RobotFighter.Entities;
+    public class MyRobot : Robot
+    {
+        private int ticks;
+        private int moves;
 
-	public class MyRobot : Robot
-	{
-	    private int ticks = 0;
+        protected override void Spawn()
+        {
+        }
 
-	    private int moves = 0;
+        protected override void Update()
+        {
+            ticks++;
 
-		protected override void Spawn()
-		{
-			
-		}
+            if (ticks % 50 == 0)
+            {
+                if (FacingDirection == Direction.Left)
+                {
+                    var tile = InspectTile(Direction.Up | Direction.Left);
 
-		protected override void Update()
-		{
-		    this.ticks++;
+                    if (!tile.HasValue)
+                    {
+                        return;
+                    }
 
-		    if (this.ticks % 100 == 0)
-		    {
-		        if (this.FacingDirection == Direction.Left)
-		        {
-		            var tile = this.InspectTile(Direction.Up | Direction.Left);
-
-		            if (!tile.HasValue)
-		            {
-		                return;
-		            }
-
-		            if (this.moves < 5 && !tile.Value.IsObstacle)
-		            {
-		                this.Move();
-		                this.moves++;
-		            }
-		            else 
-		            {
-                        this.TurnRight();
-                        this.Move();
-                        this.moves++;
-		            }
-		        }
-		        else
-		        {
-		            this.TurnRight();
-		            this.Move();
-		        }
-		    }
-		}
+                    if (moves < 5 && !tile.Value.IsObstacle)
+                    {
+                        Move();
+                        moves++;
+                    }
+                    else 
+                    {
+                        TurnRight();
+                        Move();
+                        moves++;
+                    }
+                }
+                else
+                {
+                    TurnRight();
+                    Move();
+                }
+            }
+        }
     }
 }

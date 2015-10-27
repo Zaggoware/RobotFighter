@@ -1,79 +1,46 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Zaggoware.RobotFighter.Entities;
+using Zaggoware.RobotFighter.Items;
 
 namespace Zaggoware.RobotFighter.Environment
 {
-    using Zaggoware.RobotFighter.Entities;
-    using Zaggoware.RobotFighter.Items;
-
     internal class World
-	{
-        internal RobotManager RobotManager { get; private set; }
+    {
+        public World(Game game, int width, int height)
+        {
+            this.game = game;
+            Width = width;
+            Height = height;
 
+            RobotManager = new RobotManager(game);
+            ItemManager = new ItemManager(game);
+            Tiles = new Tile[width, height];
+
+            var r = new Random();
+
+            for (var x = 0; x < width; x++)
+            {
+                for (var y = 0; y < height; y++)
+                {
+                    var isObstacle = r.Next(0, 10) % 4 == 0;
+
+                    Tiles[x, y] = new Tile(x, y, isObstacle);
+                }
+            }
+        }
+
+        internal RobotManager RobotManager { get; }
         internal ItemManager ItemManager { get; private set; }
-
-        internal int Width
-        {
-            get
-            {
-                return this.width;
-            }
-        }
-
-        internal int Height
-        {
-            get
-            {
-                return this.height;
-            }
-        }
-
-        internal Tile[,] Tiles
-        {
-            get
-            {
-                return this.tiles;
-            }
-        }
+        internal int Width { get; }
+        internal int Height { get; }
+        internal Tile[,] Tiles { get; }
 
         private readonly Game game;
 
-        private readonly int width;
-
-        private readonly int height;
-
-        private readonly Tile[,] tiles;
-
-		public World(Game game, int width, int height)
-		{
-            this.game = game;
-            this.width = width;
-            this.height = height;
-
-            this.RobotManager = new RobotManager(game);
-            this.ItemManager = new ItemManager(game);
-		    this.tiles = new Tile[width, height];
-
-		    var r = new Random();
-
-		    for (var x = 0; x < width; x++)
-		    {
-		        for (var y = 0; y < height; y++)
-		        {
-		            var isObstacle = r.Next(0, 10) % 4 == 0;
-
-                    this.tiles[x, y] = new Tile(x, y, isObstacle);
-		        }
-		    }
-		}
-
         public void Update()
         {
-            this.RobotManager.Update();
-            this.RobotManager.Update();
+            RobotManager.Update();
         }
 
         public bool MoveRobot(Robot robot)
@@ -85,28 +52,28 @@ namespace Zaggoware.RobotFighter.Environment
                 case Direction.Up:
                     if (robot.CurrentTile.Y > 0)
                     {
-                        newTile = tiles[robot.CurrentTile.X, robot.CurrentTile.Y - 1];
+                        newTile = Tiles[robot.CurrentTile.X, robot.CurrentTile.Y - 1];
                     }
                     break;
 
                 case Direction.Right:
-                    if (robot.CurrentTile.Y < this.height - 1)
+                    if (robot.CurrentTile.Y < Height - 1)
                     {
-                        newTile = tiles[robot.CurrentTile.X + 1, robot.CurrentTile.Y];
+                        newTile = Tiles[robot.CurrentTile.X + 1, robot.CurrentTile.Y];
                     }
                     break;
 
                 case Direction.Down:
-                    if (robot.CurrentTile.Y < this.height - 1)
+                    if (robot.CurrentTile.Y < Height - 1)
                     {
-                        newTile = tiles[robot.CurrentTile.X, robot.CurrentTile.Y + 1];
+                        newTile = Tiles[robot.CurrentTile.X, robot.CurrentTile.Y + 1];
                     }
                     break;
 
                 case Direction.Left:
                     if (robot.CurrentTile.X > 0)
                     {
-                        newTile = tiles[robot.CurrentTile.X - 1, robot.CurrentTile.Y];
+                        newTile = Tiles[robot.CurrentTile.X - 1, robot.CurrentTile.Y];
                     }
                     break;
             }
@@ -121,23 +88,23 @@ namespace Zaggoware.RobotFighter.Environment
 
         public Robot CreateRobot<T>() where T : Robot
         {
-            var robot = this.RobotManager.CreateRobot<T>();
+            var robot = RobotManager.CreateRobot<T>();
             robot.Spawn(this);
 
             var r = new Random();
-            var x = r.Next(0, this.width);
-            var y = r.Next(0, this.Height);
+            var x = r.Next(0, Width);
+            var y = r.Next(0, Height);
 
-            this.tiles[x, y] = new Tile(x, y, false);
+            Tiles[x, y] = new Tile(x, y, false);
 
-            robot.CurrentTile = this.tiles[x, y];
+            robot.CurrentTile = Tiles[x, y];
 
             return robot;
         }
 
         public bool IsObstacle(int x, int y)
         {
-            return this.tiles[x, y].IsObstacle;
+            return Tiles[x, y].IsObstacle;
         }
-	}
+    }
 }

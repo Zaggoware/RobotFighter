@@ -1,46 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Zaggoware.RobotFighter.Items
 {
-	using System.Collections.ObjectModel;
+    internal class ItemManager
+    {
+        public ItemManager(Game game)
+        {
+            this.game = game;
+        }
 
-	internal class ItemManager
-	{
-		private readonly Game game;
+        public ReadOnlyCollection<Item> Items => items.AsReadOnly();
 
-		private readonly List<Item> items;
+        private readonly Game game;
+        private readonly List<Item> items = new List<Item>();
 
-		public ItemManager(Game game)
-		{
-			this.game = game;
-			this.items = new List<Item>();
-		}
+        public void AddItem(Item item)
+        {
+            items.Add(item);
+        }
 
-		public ReadOnlyCollection<Item> Items
-		{
-			get
-			{
-				return this.items.AsReadOnly();
-			}
-		}
+        public void RemoveItem(Item item)
+        {
+            items.Remove(item);
+        }
 
-		public void AddItem(Item item)
-		{
-			this.items.Add(item);
-		}
-
-		public void RemoveItem(Item item)
-		{
-			this.items.Remove(item);
-		}
-
-		public bool ContaisnItem(Item item)
-		{
-			return this.items.Contains(item);
-		}
-	}
+        public bool ContainsItem(Item item)
+        {
+            return items.Contains(item);
+        }
+    }
 }

@@ -1,96 +1,71 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Zaggoware.RobotFighter.Entities;
 
 namespace Zaggoware.RobotFighter.Items
 {
-	using System.Collections;
-
-	using Zaggoware.RobotFighter.Entities;
-
     public class Inventory : ICollection<Item>
-	{
-		private List<Item> items;
+    {
+        internal Inventory(Robot robot)
+        {
+            items = new List<Item>();
+            Robot = robot;
+        }
+
+        public Item this[int index] => items[index];
+        public int Count => items.Count;
+        public bool IsReadOnly => false;
 
         internal Robot Robot { get; set; }
 
-		internal Inventory(Robot robot)
-		{
-            this.items = new List<Item>();
-            this.Robot = robot;
-		}
+        private readonly List<Item> items;
 
-		public Item this[int index]
-		{
-			get
-			{
-				return items[index];
-			}
-		}
+        internal void Add(Item item)
+        {
+            throw new NotSupportedException();
+        }
 
-	    public int Count
-	    {
-	        get
-	        {
-	            return items.Count;
-	        }
-	    }
+        void ICollection<Item>.Add(Item item)
+        {
+            throw new NotSupportedException();
+        }
 
-	    public bool IsReadOnly
-	    {
-	        get
-	        {
-	            return false;
-	        }
-	    }
+        public void Clear()
+        {
+            items.Clear();
+        }
 
-		internal void Add(Item item)
-		{
-			
-		}
+        public bool Contains(Item item)
+        {
+            return items.Contains(item);
+        }
 
-		void ICollection<Item>.Add(Item item)
-		{
-			throw new NotSupportedException();
-		}
+        public void CopyTo(Item[] array, int arrayIndex)
+        {
+            items.CopyTo(array, arrayIndex);
+        }
 
-		public void Clear()
-		{
-			this.items.Clear();
-		}
+        public void Drop(Item item)
+        {
+        }
 
-		public bool Contains(Item item)
-		{
-			return items.Contains(item);
-		}
+        public IEnumerator<Item> GetEnumerator()
+        {
+            return items.GetEnumerator();
+        }
 
-		public void CopyTo(Item[] array, int arrayIndex)
-		{
-			items.CopyTo(array, arrayIndex);
-		}
+        bool ICollection<Item>.Remove(Item item)
+        {
+            Drop(item);
 
-	    public void Drop(Item item)
-	    {
-	        
-	    }
+            return true;
+        }
 
-		bool ICollection<Item>.Remove(Item item)
-		{
-		    this.Drop(item);
-
-		    return true;
-		}
-
-		public IEnumerator<Item> GetEnumerator()
-		{
-			return items.GetEnumerator();
-		}
-
-		IEnumerator IEnumerable.GetEnumerator()
-		{
-			return this.GetEnumerator();
-		}
-	}
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
 }

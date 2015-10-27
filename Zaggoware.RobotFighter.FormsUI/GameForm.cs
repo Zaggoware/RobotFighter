@@ -1,169 +1,159 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using Zaggoware.RobotFighter.Entities;
+using Zaggoware.RobotFighter.TestRobot;
 
 namespace Zaggoware.RobotFighter.FormsUI
 {
-	using Zaggoware.RobotFighter.Entities;
-	using Zaggoware.RobotFighter.TestRobot;
-
     public partial class GameForm : Form
     {
-        private Game game;
-
-        private bool isPaused = false;
-
-        private int ticks = 0;
-
         public GameForm()
         {
             InitializeComponent();
         }
 
+        private Game game;
+        private bool isPaused;
+        private int ticks;
 
         private void CreateGame()
         {
-            this.game = GameManager.StartNewGame();
-            this.game.WorldDescriptor.CreateRobot<MyRobot>();
+            game = GameManager.StartNewGame();
+            game.WorldDescriptor.CreateRobot<MyRobot>();
         }
 
         private void GameForm_Paint(object sender, PaintEventArgs e)
         {
-            if (this.game == null)
+            if (game == null)
             {
                 return;
             }
 
-            const int OffsetX = 10;
-            const int OffsetY = 50;
-            const int TileSize = 16;
+            const int offsetX = 10;
+            const int offsetY = 50;
+            const int tileSize = 16;
 
-            for (var x = 0; x < this.game.WorldDescriptor.Width; x++)
+            for (var x = 0; x < game.WorldDescriptor.Width; x++)
             {
-                for (var y = 0; y < this.game.WorldDescriptor.Height; y++)
+                for (var y = 0; y < game.WorldDescriptor.Height; y++)
                 {
                     e.Graphics.DrawRectangle(
                         Pens.Black,
-                        OffsetX + (x * TileSize),
-                        OffsetY + (y * TileSize),
-                        TileSize,
-                        TileSize);
+                        offsetX + (x * tileSize),
+                        offsetY + (y * tileSize),
+                        tileSize,
+                        tileSize);
 
-                    if (this.game.WorldDescriptor.IsObstacle(x, y))
+                    if (game.WorldDescriptor.IsObstacle(x, y))
                     {
                         e.Graphics.FillRectangle(
                             Brushes.Black,
-                            OffsetX + (x * TileSize),
-                            OffsetY + (y * TileSize),
-                            TileSize,
-                            TileSize);
+                            offsetX + (x * tileSize),
+                            offsetY + (y * tileSize),
+                            tileSize,
+                            tileSize);
                     }
                 }
             }
 
-            foreach (var robot in this.game.WorldDescriptor.GetRobots())
+            foreach (var robot in game.WorldDescriptor.GetRobots())
             {
-                if (!robot.IsAlive || robot.X < 0 || robot.Y < 0 || robot.X >= this.game.WorldDescriptor.Width
-                    || robot.Y >= this.game.WorldDescriptor.Height)
+                if (!robot.IsAlive || robot.X < 0 || robot.Y < 0 || robot.X >= game.WorldDescriptor.Width
+                    || robot.Y >= game.WorldDescriptor.Height)
                 {
                     continue;
                 }
 
                 e.Graphics.FillRectangle(
                     Brushes.Brown,
-                    OffsetX + (robot.X * TileSize),
-                    OffsetY + (robot.Y * TileSize),
-                    TileSize,
-                    TileSize);
+                    offsetX + (robot.X * tileSize),
+                    offsetY + (robot.Y * tileSize),
+                    tileSize,
+                    tileSize);
 
-	            RectangleF? facingBounds = null;
-	            float fbWidth = TileSize / 2;
-	            float fbHeight = TileSize / 4;
+                RectangleF? facingBounds = null;
+                float fbWidth = tileSize / 2;
+                float fbHeight = tileSize / 4;
 
-	            switch (robot.FaceDirection)
-	            {
-					case Direction.Up:
-			            facingBounds = new RectangleF(
-				            OffsetX + (robot.X * TileSize) + (fbWidth / 2),
-				            OffsetY + (robot.Y * TileSize),
-				            fbWidth,
-				            fbHeight);
-			            break;
+                switch (robot.FaceDirection)
+                {
+                    case Direction.Up:
+                        facingBounds = new RectangleF(
+                            offsetX + (robot.X * tileSize) + (fbWidth / 2),
+                            offsetY + (robot.Y * tileSize),
+                            fbWidth,
+                            fbHeight);
+                        break;
 
-					case Direction.Right:
-						facingBounds = new RectangleF(
-							OffsetX + (robot.X * TileSize) + TileSize - fbHeight,
-							OffsetY + (robot.Y * TileSize) + (fbWidth / 2),
-							fbHeight,
-							fbWidth);
-						break;
+                    case Direction.Right:
+                        facingBounds = new RectangleF(
+                            offsetX + (robot.X * tileSize) + tileSize - fbHeight,
+                            offsetY + (robot.Y * tileSize) + (fbWidth / 2),
+                            fbHeight,
+                            fbWidth);
+                        break;
 
-					case Direction.Down:
-						facingBounds = new RectangleF(
-				            OffsetX + (robot.X * TileSize) + (fbWidth / 2),
-				            OffsetY + (robot.Y * TileSize) + TileSize - fbHeight,
-				            fbWidth,
-				            fbHeight);
-			            break;
+                    case Direction.Down:
+                        facingBounds = new RectangleF(
+                            offsetX + (robot.X * tileSize) + (fbWidth / 2),
+                            offsetY + (robot.Y * tileSize) + tileSize - fbHeight,
+                            fbWidth,
+                            fbHeight);
+                        break;
 
-		            case Direction.Left:
-			            facingBounds = new RectangleF(
-				            OffsetX + (robot.X * TileSize),
-							OffsetY + (robot.Y * TileSize) + (fbWidth / 2),
-				            fbHeight,
-				            fbWidth);
-			            break;
-	            }
+                    case Direction.Left:
+                        facingBounds = new RectangleF(
+                            offsetX + (robot.X * tileSize),
+                            offsetY + (robot.Y * tileSize) + (fbWidth / 2),
+                            fbHeight,
+                            fbWidth);
+                        break;
+                }
 
-	            if (facingBounds.HasValue)
-	            {
-		            e.Graphics.FillRectangle(Brushes.GreenYellow, facingBounds.Value);
-	            }
+                if (facingBounds.HasValue)
+                {
+                    e.Graphics.FillRectangle(Brushes.GreenYellow, facingBounds.Value);
+                }
             }
 
             e.Graphics.DrawString(
-                "Ticks: " + this.ticks,
+                "Ticks: " + ticks,
                 new Font("Arial", 14f, FontStyle.Regular),
                 Brushes.Black,
                 180,
                 13);
         }
 
-        private void startButton_Click(object sender, EventArgs e)
+        private void StartButton_Click(object sender, EventArgs e)
         {
-            if (this.game == null)
+            if (game == null)
             {
-                this.CreateGame();
+                CreateGame();
             }
 
-            this.gameTimer.Enabled = true;
-
-            this.isPaused = false;
+            gameTimer.Enabled = true;
+            isPaused = false;
         }
 
-        private void pauseButton_Click(object sender, EventArgs e)
+        private void PauseButton_Click(object sender, EventArgs e)
         {
-            this.isPaused = true;
-            this.gameTimer.Enabled = false;
+            isPaused = true;
+            gameTimer.Enabled = false;
         }
 
-        private void gameTimer_Tick(object sender, EventArgs e)
+        private void GameTimer_Tick(object sender, EventArgs e)
         {
-            if (this.game == null || this.isPaused)
+            if (game == null || isPaused)
             {
                 return;
             }
 
-            this.ticks++;
+            ticks++;
 
-            this.game.Update();
-            this.Invalidate();
+            game.Update();
+            Invalidate();
         }
     }
 }

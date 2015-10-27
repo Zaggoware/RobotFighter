@@ -1,34 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+
+using Zaggoware.RobotFighter.Items;
 
 namespace Zaggoware.RobotFighter.Entities
 {
-    using Zaggoware.RobotFighter.Items;
-
     internal class RobotManager
     {
-        private readonly Game game;
-
-        private readonly List<Robot> robots;
-
         public RobotManager(Game game)
         {
             this.game = game;
             robots = new List<Robot>();
         }
 
-        public ReadOnlyCollection<Robot> Robots
-        {
-            get
-            {
-                return this.robots.AsReadOnly();
-            }
-        }
+        public ReadOnlyCollection<Robot> Robots => this.robots.AsReadOnly();
 
+        private readonly Game game;
+        private readonly List<Robot> robots;
 
         public Robot CreateRobot<T>() where T : Robot
         {
@@ -42,7 +32,7 @@ namespace Zaggoware.RobotFighter.Entities
 
             robot.Inventory = new Inventory(robot);
 
-            this.robots.Add(robot);
+            robots.Add(robot);
 
             return robot;
         }

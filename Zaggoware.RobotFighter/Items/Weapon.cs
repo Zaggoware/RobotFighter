@@ -1,33 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Zaggoware.RobotFighter.Items
+﻿namespace Zaggoware.RobotFighter.Items
 {
-	public class Weapon : Item
-	{
-		public WeaponType Type { get; private set; }
+    public class Weapon : Item
+    {
+        internal Weapon(string name, WeaponType type, int damageRate, int speedRate)
+            : base(name)
+        {
+            Type = type;
+            DamageRate = damageRate;
+            SpeedRate = speedRate;
+        }
 
-		public int DamageRate { get; private set; }
+        public WeaponType Type { get; }
+        public int DamageRate { get; }
+        public int SpeedRate { get; }
 
-		public int SpeedRate { get; private set; }
-
-		public override bool IsWeapon
-		{
-			get
-			{
-				return true;
-			}
-		}
-
-		internal Weapon(string name, WeaponType type, int damageRate, int speedRate)
-			: base(name)
-		{
-			this.Type = type;
-			this.DamageRate = damageRate;
-			this.SpeedRate = speedRate;
-		}
-	}
+        public override bool IsWeapon => true;
+    }
 }

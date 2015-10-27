@@ -1,62 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Zaggoware.RobotFighter.Items
 {
-	using Zaggoware.RobotFighter.Entities;
+    public abstract class Item : IItem
+    {
+        protected Item(string name)
+        {
+            Name = name;
+        }
 
-	public abstract class Item : IItem
-	{
-		public string Name { get; private set; }
+        public string Name { get; }
 
-		protected Item(string name)
-		{
-			this.Name = name;
-		}
-
-		public virtual bool IsWeapon
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		public virtual bool IsArmor
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		public virtual bool IsFood
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		public virtual bool CanHeal
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		public virtual bool IsJunk
-		{
-			get
-			{
-				return !IsWeapon && !IsArmor && !IsFood && !CanHeal;
-			}
-		}
+        public virtual bool IsWeapon => false;
+        public virtual bool IsArmor => false;
+        public virtual bool IsFood => false;
+        public virtual bool CanHeal => false;
+        public virtual bool IsJunk => !IsWeapon && !IsArmor && !IsFood && !CanHeal;
 
         internal Inventory Inventory { get; set; }
-	}
+    }
 }

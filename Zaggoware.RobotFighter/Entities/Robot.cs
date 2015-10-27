@@ -1,41 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Zaggoware.RobotFighter.Environment;
+using Zaggoware.RobotFighter.Items;
 
 namespace Zaggoware.RobotFighter.Entities
 {
-    using Zaggoware.RobotFighter.Environment;
-    using Zaggoware.RobotFighter.Items;
-
     public abstract class Robot : IRobot
     {
         public event AttackEventHandler Attacking;
-
         public event AttackEventHandler BeingAttacked;
 
         public const int FullHealth = 100;
 
-        public int Health
-        {
-            get
-            {
-                return this.health;
-            }
-        }
-
-        public bool IsAlive
-        {
-            get
-            {
-                return this.State == RobotState.Alive && this.health > 0;
-            }
-        }
-
         public int Attack(Weapon weapon)
         {
-            if (weapon.Inventory == null || weapon.Inventory.Robot == null)
+            if (weapon.Inventory?.Robot == null)
             {
                 return 0;
             }
@@ -50,40 +28,39 @@ namespace Zaggoware.RobotFighter.Entities
             var r = new Random();
             var damage = r.Next(0, weapon.DamageRate);
 
-
-
             return damage;
         }
+        
+        public int Health { get; private set; }
+        public bool IsAlive => State == RobotState.Alive && Health > 0;
 
         internal RobotState State { get; set; }
 
         protected internal Tile CurrentTile { get; internal set; }
-
         protected internal Inventory Inventory { get; internal set; }
-
         protected internal Direction FacingDirection { get; internal set; }
 
         protected bool CanMove
         {
             get
             {
-                switch (this.FacingDirection)
+                switch (FacingDirection)
                 {
                     case Direction.Up:
-                        return this.CurrentTile.Y > 0
-                               && !this.world.IsObstacle(this.CurrentTile.X, this.CurrentTile.Y - 1);
+                        return CurrentTile.Y > 0
+                               && !world.IsObstacle(CurrentTile.X, CurrentTile.Y - 1);
 
                     case Direction.Right:
-                        return this.CurrentTile.X < this.world.Width - 1
-                            && !this.world.IsObstacle(this.CurrentTile.X + 1, this.CurrentTile.Y);
+                        return CurrentTile.X < world.Width - 1
+                            && !world.IsObstacle(CurrentTile.X + 1, CurrentTile.Y);
 
                     case Direction.Down:
-                        return this.CurrentTile.Y < this.world.Height - 1
-                            && !this.world.IsObstacle(this.CurrentTile.X, this.CurrentTile.Y + 1);
+                        return CurrentTile.Y < world.Height - 1
+                            && !world.IsObstacle(CurrentTile.X, CurrentTile.Y + 1);
 
                     case Direction.Left:
-                        return this.CurrentTile.X > 0
-                            && !this.world.IsObstacle(this.CurrentTile.X - 1, this.CurrentTile.Y);
+                        return CurrentTile.X > 0
+                            && !world.IsObstacle(CurrentTile.X - 1, CurrentTile.Y);
                 }
 
                 return false;
@@ -92,20 +69,18 @@ namespace Zaggoware.RobotFighter.Entities
 
         private World world;
 
-        private int health;
-
         internal void Spawn(World world)
         {
             this.world = world;
-            this.health = FullHealth;
-            this.FacingDirection = Direction.Left;
-            this.State = RobotState.Alive;
-            this.Spawn();
+            Health = FullHealth;
+            FacingDirection = Direction.Left;
+            State = RobotState.Alive;
+            Spawn();
         }
 
         internal void Update(RobotManager manager)
         {
-            this.Update();
+            Update();
         }
 
         internal bool IsInRange(Robot target)
@@ -114,44 +89,43 @@ namespace Zaggoware.RobotFighter.Entities
         }
 
         protected abstract void Spawn();
-
         protected abstract void Update();
 
         protected bool Move()
         {
-            return this.Move(1) > 0;
+            return Move(1) > 0;
         }
 
         protected int Move(int steps)
         {
-            if (this.CanMove)
+            if (!CanMove)
             {
-                this.world.MoveRobot(this);
-
-                return steps;
+                return 0;
             }
 
-            return 0;
+            world.MoveRobot(this);
+
+            return steps;
         }
 
         protected void TurnLeft()
         {
-            switch (this.FacingDirection)
+            switch (FacingDirection)
             {
                 case Direction.Up:
-                    this.FacingDirection = Direction.Left;
+                    FacingDirection = Direction.Left;
                     break;
 
                 case Direction.Right:
-                    this.FacingDirection = Direction.Up;
+                    FacingDirection = Direction.Up;
                     break;
 
                 case Direction.Down:
-                    this.FacingDirection = Direction.Right;
+                    FacingDirection = Direction.Right;
                     break;
 
                 case Direction.Left:
-                    this.FacingDirection = Direction.Down;
+                    FacingDirection = Direction.Down;
                     break;
             }
         }
@@ -160,28 +134,28 @@ namespace Zaggoware.RobotFighter.Entities
         {
             for (var i = 0; i < times; i++)
             {
-                this.TurnLeft();
+                TurnLeft();
             }
         }
 
         protected void TurnRight()
         {
-            switch (this.FacingDirection)
+            switch (FacingDirection)
             {
                 case Direction.Up:
-                    this.FacingDirection = Direction.Right;
+                    FacingDirection = Direction.Right;
                     break;
 
                 case Direction.Right:
-                    this.FacingDirection = Direction.Down;
+                    FacingDirection = Direction.Down;
                     break;
 
                 case Direction.Down:
-                    this.FacingDirection = Direction.Left;
+                    FacingDirection = Direction.Left;
                     break;
 
                 case Direction.Left:
-                    this.FacingDirection = Direction.Up;
+                    FacingDirection = Direction.Up;
                     break;
             }
         }
@@ -190,62 +164,69 @@ namespace Zaggoware.RobotFighter.Entities
         {
             for (var i = 0; i < times; i++)
             {
-                this.TurnRight();
+                TurnRight();
             }
         }
 
-        protected Tile? InspectTile(Direction direction)
+        protected Tile? InspectTile()
         {
-            // Tiles to inspect (R = current robot)
-            // T T T
-            // T R T
-            // T T T
+            var x = CurrentTile.X;
+            var y = CurrentTile.Y;
 
-            var x = -1;
-            var y = -1;
-
-            if (direction.HasFlag(Direction.Up))
-            {
-                y = this.CurrentTile.Y - 1;
-            }
-
-            if (direction.HasFlag(Direction.Right))
-            {
-                x = this.CurrentTile.X + 1;
-            }
-
-            if (direction.HasFlag(Direction.Down))
-            {
-                y = this.CurrentTile.Y + 1;
-            }
-
-            if (direction.HasFlag(Direction.Left))
-            {
-                x = this.CurrentTile.X - 1;
-            }
-
-            if (x < 0 && y < 0)
+            if (x < 0 || y < 0)
             {
                 return null;
             }
 
-            return this.world.Tiles[x, y];
+            return world.Tiles[x, y];
+        }
+
+        protected Tile? InspectTile(Direction direction)
+        {
+            // Tiles available to inspect (R = current robot)
+            // T T T
+            // T R T
+            // T T T
+
+            var x = CurrentTile.X;
+            var y = CurrentTile.Y;
+
+            if (direction.HasFlag(Direction.Up))
+            {
+                y--;
+            }
+
+            if (direction.HasFlag(Direction.Right))
+            {
+                x++;
+            }
+
+            if (direction.HasFlag(Direction.Down))
+            {
+                y++;
+            }
+
+            if (direction.HasFlag(Direction.Left))
+            {
+                x--;
+            }
+
+            if (x < 0 || y < 0)
+            {
+                return null;
+            }
+
+            return world.Tiles[x, y];
         }
 
         protected virtual void OnAttacking(AttackEventArgs args)
         {
-            if (this.Attacking != null)
-            {
-                this.Attacking(args);
-            }
+            Attacking?.Invoke(args);
         }
 
         protected virtual void OnBeingAttacked(AttackEventArgs args)
         {
-            if (this.BeingAttacked != null)
-            {
-                this.BeingAttacked(args);
-            }
+            BeingAttacked?.Invoke(args);
         }
     }
 }

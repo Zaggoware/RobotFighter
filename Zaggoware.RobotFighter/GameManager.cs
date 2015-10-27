@@ -1,33 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zaggoware.RobotFighter
 {
-	public class GameManager
-	{
-	    private static readonly List<Game> games = new List<Game>();
+    public class GameManager
+    {
+        public static IEnumerable<Game> Games => games.AsEnumerable();
 
-	    public static IEnumerable<Game> Games
-	    {
-	        get
-	        {
-	            return games.AsEnumerable();
-	        }
-	    }
+        private static readonly List<Game> games = new List<Game>();
 
-	    public static Game StartNewGame()
-	    {
-	        var game = new Game();
+        public static Game StartNewGame()
+        {
+            var game = new Game();
 
-	        games.Add(game);
+            games.Add(game);
 
-	        game.Initialize();
+            game.Initialize();
             game.Start();
 
-	        return game;
-	    }
-	}
+            return game;
+        }
+    }
 }
