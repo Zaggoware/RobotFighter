@@ -32,6 +32,7 @@
             this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.startButton = new System.Windows.Forms.Button();
             this.pauseButton = new System.Windows.Forms.Button();
+            this.loggerBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // gameTimer
@@ -59,11 +60,20 @@
             this.pauseButton.UseVisualStyleBackColor = true;
             this.pauseButton.Click += new System.EventHandler(this.PauseButton_Click);
             // 
+            // loggerBox
+            // 
+            this.loggerBox.Location = new System.Drawing.Point(544, 12);
+            this.loggerBox.Multiline = true;
+            this.loggerBox.Name = "loggerBox";
+            this.loggerBox.Size = new System.Drawing.Size(100, 90);
+            this.loggerBox.TabIndex = 2;
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(656, 586);
+            this.Controls.Add(this.loggerBox);
             this.Controls.Add(this.pauseButton);
             this.Controls.Add(this.startButton);
             this.DoubleBuffered = true;
@@ -71,6 +81,7 @@
             this.Text = "Robot Fighter";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.GameForm_Paint);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -79,6 +90,7 @@
         private System.Windows.Forms.Timer gameTimer;
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button pauseButton;
+        private System.Windows.Forms.TextBox loggerBox;
     }
 }
 

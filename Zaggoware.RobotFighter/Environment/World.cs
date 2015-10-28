@@ -40,7 +40,7 @@ namespace Zaggoware.RobotFighter.Environment
 
         public void Update()
         {
-            RobotManager.Update();
+            //RobotManager.Update();
         }
 
         public bool MoveRobot(Robot robot)

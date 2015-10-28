@@ -4,6 +4,9 @@ using System.Linq;
 using System.Collections.ObjectModel;
 
 using Zaggoware.RobotFighter.Items;
+using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace Zaggoware.RobotFighter.Entities
 {
@@ -12,13 +15,12 @@ namespace Zaggoware.RobotFighter.Entities
         public RobotManager(Game game)
         {
             this.game = game;
-            robots = new List<Robot>();
         }
 
-        public ReadOnlyCollection<Robot> Robots => this.robots.AsReadOnly();
+        public IEnumerable<Robot> Robots => robots.Keys.AsEnumerable();
 
         private readonly Game game;
-        private readonly List<Robot> robots;
+        private readonly Dictionary<Robot, Thread> robots = new Dictionary<Robot, Thread>();
 
         public Robot CreateRobot<T>() where T : Robot
         {
@@ -32,19 +34,32 @@ namespace Zaggoware.RobotFighter.Entities
 
             robot.Inventory = new Inventory(robot);
 
-            robots.Add(robot);
+            var threadStart = new ThreadStart(() =>
+            {
+                while (true)
+                {
+                    UpdateRobot(robot);
+                    Thread.Sleep(25);
+                }
+            });
+            var thread = new Thread(threadStart);
+            thread.IsBackground = true;
+            thread.Start();
+
+            robots.Add(robot, thread);
 
             return robot;
         }
 
-        public void Update()
+        private void UpdateRobot(Robot robot)
         {
-            var robotsToUpdate = this.robots.ToList();
-
-            while (robotsToUpdate.Count > 0)
+            try
             {
-                robotsToUpdate.First().Update(this);
-                robotsToUpdate.RemoveAt(0);
+                robot.Update(this);
+            }
+            catch (Exception exception)
+            {
+                MemoryLogger.Log(exception.Message);
             }
         }
     }

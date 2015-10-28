@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using Zaggoware.RobotFighter.Environment;
 using Zaggoware.RobotFighter.Items;
 
@@ -104,6 +105,7 @@ namespace Zaggoware.RobotFighter.Entities
             }
 
             world.MoveRobot(this);
+            Wait(1000);
 
             return steps;
         }
@@ -217,6 +219,11 @@ namespace Zaggoware.RobotFighter.Entities
             }
 
             return world.Tiles[x, y];
+        }
+
+        protected void Wait(int milliseconds)
+        {
+            Thread.Sleep(milliseconds);
         }
 
         protected virtual void OnAttacking(AttackEventArgs args)

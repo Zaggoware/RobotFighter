@@ -53,6 +53,7 @@
     <Compile Include="Entities\Robot.cs" />
     <Compile Include="Items\Weapon.cs" />
     <Compile Include="Items\WeaponType.cs" />
+    <Compile Include="MemoryLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\RobotManager.cs" />
     <Compile Include="Entities\RobotState.cs" />

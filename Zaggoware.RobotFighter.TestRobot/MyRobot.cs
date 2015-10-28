@@ -1,10 +1,10 @@
-﻿using Zaggoware.RobotFighter.Entities;
+﻿using System.Threading;
+using Zaggoware.RobotFighter.Entities;
 
 namespace Zaggoware.RobotFighter.TestRobot
 {
     public class MyRobot : Robot
     {
-        private int ticks;
         private int moves;
 
         protected override void Spawn()
@@ -13,36 +13,37 @@ namespace Zaggoware.RobotFighter.TestRobot
 
         protected override void Update()
         {
-            ticks++;
-
-            if (ticks % 50 == 0)
+            if (FacingDirection == Direction.Left)
             {
-                if (FacingDirection == Direction.Left)
+                var tile = InspectTile(Direction.Left);
+
+                if (!tile.HasValue)
                 {
-                    var tile = InspectTile(Direction.Up | Direction.Left);
+                    return;
+                }
 
-                    if (!tile.HasValue)
-                    {
-                        return;
-                    }
-
-                    if (moves < 5 && !tile.Value.IsObstacle)
-                    {
-                        Move();
-                        moves++;
-                    }
-                    else 
+                if (moves < 5 && !tile.Value.IsObstacle)
+                {
+                    Move();
+                    moves++;
+                }
+                else 
+                {
+                    for (var i=0; i<4; i++)
                     {
                         TurnRight();
-                        Move();
-                        moves++;
+                        Wait(100);
                     }
-                }
-                else
-                {
                     TurnRight();
                     Move();
+                    moves++;
                 }
+            }
+            else
+            {
+                TurnRight();
+                Move();
+                moves++;
             }
         }
     }

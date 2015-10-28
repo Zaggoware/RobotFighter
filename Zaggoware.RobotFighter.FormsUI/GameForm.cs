@@ -153,6 +153,9 @@ namespace Zaggoware.RobotFighter.FormsUI
             ticks++;
 
             game.Update();
+
+            loggerBox.Text = string.Join("\r\n", MemoryLogger.Logs);
+
             Invalidate();
         }
     }
