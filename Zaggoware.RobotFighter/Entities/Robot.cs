@@ -170,19 +170,6 @@ namespace Zaggoware.RobotFighter.Entities
             }
         }
 
-        protected Tile? InspectTile()
-        {
-            var x = CurrentTile.X;
-            var y = CurrentTile.Y;
-
-            if (x < 0 || y < 0)
-            {
-                return null;
-            }
-
-            return world.Tiles[x, y];
-        }
-
         protected Tile? InspectTile(Direction direction)
         {
             // Tiles available to inspect (R = current robot)
