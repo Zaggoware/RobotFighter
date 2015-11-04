@@ -1,11 +1,12 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using Zaggoware.RobotFighter.Entities;
 
 namespace Zaggoware.RobotFighter.TestRobot
 {
     public class MyRobot : Robot
     {
-        private int moves;
+        private Random rand = new Random();
 
         protected override void Spawn()
         {
@@ -13,38 +14,19 @@ namespace Zaggoware.RobotFighter.TestRobot
 
         protected override void Update()
         {
-            if (FacingDirection == Direction.Left)
+            while (!CanMove)
             {
-                var tile = InspectTile(Direction.Left);
-
-                if (!tile.HasValue)
+                if (rand.Next(2) % 2 == 0)
                 {
-                    return;
-                }
-
-                if (moves < 5 && !tile.Value.IsObstacle)
-                {
-                    Move();
-                    moves++;
-                }
-                else 
-                {
-                    for (var i=0; i<4; i++)
-                    {
-                        TurnRight();
-                        Wait(100);
-                    }
                     TurnRight();
-                    Move();
-                    moves++;
+                }
+                else
+                {
+                    TurnLeft();
                 }
             }
-            else
-            {
-                TurnRight();
-                Move();
-                moves++;
-            }
+
+            Move();
         }
     }
 }
