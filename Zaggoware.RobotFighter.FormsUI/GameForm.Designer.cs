@@ -33,6 +33,7 @@
             this.startButton = new System.Windows.Forms.Button();
             this.pauseButton = new System.Windows.Forms.Button();
             this.loggerBox = new System.Windows.Forms.TextBox();
+            this.regenerateButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // gameTimer
@@ -68,11 +69,22 @@
             this.loggerBox.Size = new System.Drawing.Size(100, 90);
             this.loggerBox.TabIndex = 2;
             // 
+            // regenerateButton
+            // 
+            this.regenerateButton.Location = new System.Drawing.Point(128, 12);
+            this.regenerateButton.Name = "regenerateButton";
+            this.regenerateButton.Size = new System.Drawing.Size(75, 23);
+            this.regenerateButton.TabIndex = 3;
+            this.regenerateButton.Text = "Regenerate";
+            this.regenerateButton.UseVisualStyleBackColor = true;
+            this.regenerateButton.Click += new System.EventHandler(this.regenerateButton_Click);
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(656, 586);
+            this.Controls.Add(this.regenerateButton);
             this.Controls.Add(this.loggerBox);
             this.Controls.Add(this.pauseButton);
             this.Controls.Add(this.startButton);
@@ -91,6 +103,7 @@
         private System.Windows.Forms.Button startButton;
         private System.Windows.Forms.Button pauseButton;
         private System.Windows.Forms.TextBox loggerBox;
+        private System.Windows.Forms.Button regenerateButton;
     }
 }
 

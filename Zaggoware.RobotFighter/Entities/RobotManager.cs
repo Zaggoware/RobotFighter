@@ -36,7 +36,7 @@ namespace Zaggoware.RobotFighter.Entities
 
             var threadStart = new ThreadStart(() =>
             {
-                while (true)
+                while (robot.State == RobotState.Alive)
                 {
                     UpdateRobot(robot);
                     Thread.Sleep(25);
@@ -49,6 +49,23 @@ namespace Zaggoware.RobotFighter.Entities
             robots.Add(robot, thread);
 
             return robot;
+        }
+
+        internal void Clear()
+        {
+            while (Robots.Any())
+            {
+                var robot = Robots.FirstOrDefault();
+
+                if (robot != null)
+                {
+                    var thread = robots[robot];
+                    thread.Abort();
+
+                    robot.State = RobotState.Disconnected;
+                    robots.Remove(robot);
+                }
+            }
         }
 
         private void UpdateRobot(Robot robot)

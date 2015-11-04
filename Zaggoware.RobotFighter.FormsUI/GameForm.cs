@@ -152,11 +152,24 @@ namespace Zaggoware.RobotFighter.FormsUI
 
             ticks++;
 
+            // TODO: move to own internal logic.
             game.Update();
 
             loggerBox.Text = string.Join("\r\n", MemoryLogger.Logs);
 
             Invalidate();
+        }
+
+        private void regenerateButton_Click(object sender, EventArgs e)
+        {
+            game.Dispose();
+            isPaused = true;
+            gameTimer.Enabled = false;
+
+            CreateGame();
+
+            gameTimer.Enabled = true;
+            isPaused = false;
         }
     }
 }

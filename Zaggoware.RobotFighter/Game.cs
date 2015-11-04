@@ -1,8 +1,9 @@
-﻿using Zaggoware.RobotFighter.Environment;
+﻿using System;
+using Zaggoware.RobotFighter.Environment;
 
 namespace Zaggoware.RobotFighter
 {
-    public class Game
+    public class Game : IGame
     {
         internal Game()
         {
@@ -15,7 +16,7 @@ namespace Zaggoware.RobotFighter
         internal void Initialize()
         {
             World = new World(this, 32, 32);
-            WorldDescriptor = new WorldDescriptor(this.World);
+            WorldDescriptor = new WorldDescriptor(World);
 
             // TODO: Read/Load/Create World config
         }
@@ -27,6 +28,15 @@ namespace Zaggoware.RobotFighter
         public void Update()
         {
             World.Update();
+        }
+
+        public void Dispose()
+        {
+            World.RobotManager.Clear();
+            //World.ItemManager.Clear();
+
+            WorldDescriptor = null;
+            World = null;
         }
     }
 }
