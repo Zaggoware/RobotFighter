@@ -2,6 +2,7 @@
 
 using Zaggoware.RobotFighter.Environment;
 using Zaggoware.RobotFighter.Items;
+using Zaggoware.RobotFighter.Items.Weapons;
 
 namespace Zaggoware.RobotFighter.Entities
 {

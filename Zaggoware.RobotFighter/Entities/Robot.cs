@@ -2,6 +2,7 @@
 using System.Threading;
 using Zaggoware.RobotFighter.Environment;
 using Zaggoware.RobotFighter.Items;
+using Zaggoware.RobotFighter.Items.Weapons;
 
 namespace Zaggoware.RobotFighter.Entities
 {
@@ -29,10 +30,33 @@ namespace Zaggoware.RobotFighter.Entities
             var r = new Random();
             var damage = r.Next(0, weapon.DamageRate);
 
+            lock (healthObject)
+            {
+                Health -= damage;
+            }
+
             return damage;
         }
-        
-        public int Health { get; private set; }
+
+        public int Health
+        {
+            get { return health; }
+            internal set
+            {
+                if (value == health)
+                {
+                    return;
+                }
+
+                health = value < 0 ? 0 : (value > 100 ? 100 : value);
+
+                if (health == 0)
+                {
+                    State = RobotState.Dead;
+                }
+            }
+        }
+
         public bool IsAlive => State == RobotState.Alive && Health > 0;
 
         internal RobotState State { get; set; }
@@ -69,6 +93,8 @@ namespace Zaggoware.RobotFighter.Entities
         }
 
         private World world;
+        private object healthObject;
+        private int health;
 
         internal void Spawn(World world)
         {

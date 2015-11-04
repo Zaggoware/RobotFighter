@@ -1,4 +1,4 @@
-﻿namespace Zaggoware.RobotFighter.Items
+﻿namespace Zaggoware.RobotFighter.Items.Weapons
 {
     public class Weapon : Item
     {
