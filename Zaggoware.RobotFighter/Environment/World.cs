@@ -57,7 +57,7 @@ namespace Zaggoware.RobotFighter.Environment
                     break;
 
                 case Direction.Right:
-                    if (robot.CurrentTile.Y < Height - 1)
+                    if (robot.CurrentTile.X < Width - 1)
                     {
                         newTile = Tiles[robot.CurrentTile.X + 1, robot.CurrentTile.Y];
                     }
