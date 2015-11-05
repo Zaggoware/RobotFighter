@@ -178,5 +178,11 @@ namespace Zaggoware.RobotFighter.FormsUI
             gameTimer.Enabled = true;
             isPaused = false;
         }
+
+        private void mapCreatorButton_Click(object sender, EventArgs e)
+        {
+            var form = new MapCreatorForm { ShowInTaskbar = true };
+            form.Show();
+        }
     }
 }

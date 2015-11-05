@@ -35,6 +35,7 @@
             this.loggerBox = new System.Windows.Forms.TextBox();
             this.regenerateButton = new System.Windows.Forms.Button();
             this.robotsListBox = new System.Windows.Forms.ListBox();
+            this.mapCreatorButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // gameTimer
@@ -90,11 +91,23 @@
             this.robotsListBox.Size = new System.Drawing.Size(144, 173);
             this.robotsListBox.TabIndex = 4;
             // 
+            // mapCreatorButton
+            // 
+            this.mapCreatorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.mapCreatorButton.Location = new System.Drawing.Point(515, 12);
+            this.mapCreatorButton.Name = "mapCreatorButton";
+            this.mapCreatorButton.Size = new System.Drawing.Size(99, 23);
+            this.mapCreatorButton.TabIndex = 5;
+            this.mapCreatorButton.Text = "Open MapCreator";
+            this.mapCreatorButton.UseVisualStyleBackColor = true;
+            this.mapCreatorButton.Click += new System.EventHandler(this.mapCreatorButton_Click);
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(776, 596);
+            this.Controls.Add(this.mapCreatorButton);
             this.Controls.Add(this.robotsListBox);
             this.Controls.Add(this.regenerateButton);
             this.Controls.Add(this.loggerBox);
@@ -117,6 +130,7 @@
         private System.Windows.Forms.TextBox loggerBox;
         private System.Windows.Forms.Button regenerateButton;
         private System.Windows.Forms.ListBox robotsListBox;
+        private System.Windows.Forms.Button mapCreatorButton;
     }
 }
 
