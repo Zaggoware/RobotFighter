@@ -18,6 +18,8 @@ namespace Zaggoware.RobotFighter
             game.Initialize();
             game.Start();
 
+            MemoryLogger.Log("Game started.");
+
             return game;
         }
     }

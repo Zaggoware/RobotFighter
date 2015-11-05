@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -13,9 +14,10 @@ namespace Zaggoware.RobotFighter
 
         private static readonly List<string> logs = new List<string>();
 
-        public static void Log(string message, [CallerMemberName] string memberName = "", [CallerLineNumber] int sourceLinerNumber = 0)
+        public static void Log(string message, [CallerFilePath] string filePath = "", [CallerMemberName] string memberName = "", [CallerLineNumber] int sourceLinerNumber = 0)
         {
-            logs.Add($"[{memberName}:{sourceLinerNumber}] {message}");
+            var className = Path.GetFileNameWithoutExtension(filePath);
+            logs.Add($"[{className}.{memberName}:{sourceLinerNumber}] {message}");
         }
     }
 }

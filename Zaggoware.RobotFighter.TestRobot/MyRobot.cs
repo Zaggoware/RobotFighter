@@ -6,7 +6,9 @@ namespace Zaggoware.RobotFighter.TestRobot
 {
     public class MyRobot : Robot
     {
-        private Random rand = new Random();
+        public MyRobot(string name) : base(name)
+        {
+        }
 
         protected override void Spawn()
         {
@@ -16,7 +18,7 @@ namespace Zaggoware.RobotFighter.TestRobot
         {
             while (!CanMove)
             {
-                if (rand.Next(2) % 2 == 0)
+                if (Randomizer.Between(0, 2) % 2 == 0)
                 {
                     TurnRight();
                 }

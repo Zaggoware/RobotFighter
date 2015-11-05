@@ -17,13 +17,11 @@ namespace Zaggoware.RobotFighter.Environment
             ItemManager = new ItemManager(game);
             Tiles = new Tile[width, height];
 
-            var r = new Random();
-
             for (var x = 0; x < width; x++)
             {
                 for (var y = 0; y < height; y++)
                 {
-                    var isObstacle = r.Next(0, 10) % 4 == 0;
+                    var isObstacle = Randomizer.Between(0, 10) % 4 == 0;
 
                     Tiles[x, y] = new Tile(x, y, isObstacle);
                 }
@@ -86,14 +84,13 @@ namespace Zaggoware.RobotFighter.Environment
             return newTile != robot.CurrentTile;
         }
 
-        public Robot CreateRobot<T>() where T : Robot
+        public Robot CreateRobot<T>(string robotName) where T : Robot
         {
-            var robot = RobotManager.CreateRobot<T>();
+            var robot = RobotManager.CreateRobot<T>(robotName);
             robot.Spawn(this);
 
-            var r = new Random();
-            var x = r.Next(0, Width);
-            var y = r.Next(0, Height);
+            var x = Randomizer.Between(0, Width - 1);
+            var y = Randomizer.Between(0, Height - 2);
 
             Tiles[x, y] = new Tile(x, y, false);
 

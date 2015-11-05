@@ -22,29 +22,30 @@ namespace Zaggoware.RobotFighter.Entities
         private readonly Game game;
         private readonly Dictionary<Robot, Thread> robots = new Dictionary<Robot, Thread>();
 
-        public Robot CreateRobot<T>() where T : Robot
+        public Robot CreateRobot<T>(string name) where T : Robot
         {
-            var robot = Activator.CreateInstance<T>();
+            var robot = (T) Activator.CreateInstance(typeof(T), name);
 
             if (robot.State == RobotState.Disconnected || robot.State == RobotState.Alive)
             {
+                MemoryLogger.Log("Could not add robot. An existing state was found.");
                 // TODO: throw exception?
                 return null;
             }
 
             robot.Inventory = new Inventory(robot);
 
-            var threadStart = new ThreadStart(() =>
+            var threadStart = new ParameterizedThreadStart(r =>
             {
-                while (robot.State == RobotState.Alive)
+                var thisRobot = (Robot) r;
+                while (thisRobot.State == RobotState.Alive)
                 {
-                    UpdateRobot(robot);
+                    UpdateRobot(thisRobot);
                     Thread.Sleep(25);
                 }
             });
-            var thread = new Thread(threadStart);
-            thread.IsBackground = true;
-            thread.Start();
+            var thread = new Thread(threadStart) { IsBackground = true };
+            thread.Start(robot);
 
             robots.Add(robot, thread);
 

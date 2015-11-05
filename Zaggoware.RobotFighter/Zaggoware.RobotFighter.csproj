@@ -60,6 +60,7 @@
     <Compile Include="Entities\RobotState.cs" />
     <Compile Include="Environment\Tile.cs" />
     <Compile Include="Environment\World.cs" />
+    <Compile Include="Randomizer.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

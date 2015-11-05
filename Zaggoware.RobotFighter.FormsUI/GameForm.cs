@@ -21,7 +21,8 @@ namespace Zaggoware.RobotFighter.FormsUI
         private void CreateGame()
         {
             game = GameManager.StartNewGame();
-            game.WorldDescriptor.CreateRobot<MyRobot>();
+            game.WorldDescriptor.CreateRobot<MyRobot>("Robot 1");
+            game.WorldDescriptor.CreateRobot<MyRobot>("Robot 2");
         }
 
         private void GameForm_Paint(object sender, PaintEventArgs e)
@@ -122,7 +123,7 @@ namespace Zaggoware.RobotFighter.FormsUI
                 "Ticks: " + ticks,
                 new Font("Arial", 14f, FontStyle.Regular),
                 Brushes.Black,
-                180,
+                250,
                 13);
         }
 
@@ -156,6 +157,12 @@ namespace Zaggoware.RobotFighter.FormsUI
             game.Update();
 
             loggerBox.Text = string.Join("\r\n", MemoryLogger.Logs);
+            robotsListBox.Items.Clear();
+
+            foreach (var robot in game.WorldDescriptor.GetRobots())
+            {
+                robotsListBox.Items.Add($"Robot: {robot.Name} (x: {robot.X}, y: {robot.Y})");
+            }
 
             Invalidate();
         }

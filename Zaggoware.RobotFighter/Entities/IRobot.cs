@@ -5,6 +5,7 @@ namespace Zaggoware.RobotFighter.Entities
 {
     public interface IRobot
     {
+        string Name { get; }
         int Health { get; }
         bool IsAlive { get; }
 

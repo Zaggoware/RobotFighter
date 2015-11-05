@@ -8,35 +8,17 @@ namespace Zaggoware.RobotFighter.Entities
 {
     public abstract class Robot : IRobot
     {
+        protected Robot(string name)
+        {
+            Name = name;
+        }
+
         public event AttackEventHandler Attacking;
         public event AttackEventHandler BeingAttacked;
 
         public const int FullHealth = 100;
 
-        public int Attack(Weapon weapon)
-        {
-            if (weapon.Inventory?.Robot == null)
-            {
-                return 0;
-            }
-
-            var attacker = weapon.Inventory.Robot;
-
-            if (!attacker.IsInRange(this))
-            {
-                return 0;
-            }
-
-            var r = new Random();
-            var damage = r.Next(0, weapon.DamageRate);
-
-            lock (healthObject)
-            {
-                Health -= damage;
-            }
-
-            return damage;
-        }
+        public string Name { get; private set; }
 
         public int Health
         {
@@ -95,6 +77,30 @@ namespace Zaggoware.RobotFighter.Entities
         private World world;
         private object healthObject;
         private int health;
+
+        public int Attack(Weapon weapon)
+        {
+            if (weapon.Inventory?.Robot == null)
+            {
+                return 0;
+            }
+
+            var attacker = weapon.Inventory.Robot;
+
+            if (!attacker.IsInRange(this))
+            {
+                return 0;
+            }
+
+            var damage = Randomizer.Between(0, weapon.DamageRate);
+
+            lock (healthObject)
+            {
+                Health -= damage;
+            }
+
+            return damage;
+        }
 
         internal void Spawn(World world)
         {

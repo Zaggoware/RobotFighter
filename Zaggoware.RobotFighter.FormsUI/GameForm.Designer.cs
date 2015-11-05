@@ -34,6 +34,7 @@
             this.pauseButton = new System.Windows.Forms.Button();
             this.loggerBox = new System.Windows.Forms.TextBox();
             this.regenerateButton = new System.Windows.Forms.Button();
+            this.robotsListBox = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // gameTimer
@@ -63,10 +64,11 @@
             // 
             // loggerBox
             // 
-            this.loggerBox.Location = new System.Drawing.Point(544, 12);
+            this.loggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loggerBox.Location = new System.Drawing.Point(620, 12);
             this.loggerBox.Multiline = true;
             this.loggerBox.Name = "loggerBox";
-            this.loggerBox.Size = new System.Drawing.Size(100, 90);
+            this.loggerBox.Size = new System.Drawing.Size(144, 168);
             this.loggerBox.TabIndex = 2;
             // 
             // regenerateButton
@@ -79,11 +81,21 @@
             this.regenerateButton.UseVisualStyleBackColor = true;
             this.regenerateButton.Click += new System.EventHandler(this.regenerateButton_Click);
             // 
+            // robotsListBox
+            // 
+            this.robotsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.robotsListBox.FormattingEnabled = true;
+            this.robotsListBox.Location = new System.Drawing.Point(620, 186);
+            this.robotsListBox.Name = "robotsListBox";
+            this.robotsListBox.Size = new System.Drawing.Size(144, 173);
+            this.robotsListBox.TabIndex = 4;
+            // 
             // GameForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(656, 586);
+            this.ClientSize = new System.Drawing.Size(776, 596);
+            this.Controls.Add(this.robotsListBox);
             this.Controls.Add(this.regenerateButton);
             this.Controls.Add(this.loggerBox);
             this.Controls.Add(this.pauseButton);
@@ -104,6 +116,7 @@
         private System.Windows.Forms.Button pauseButton;
         private System.Windows.Forms.TextBox loggerBox;
         private System.Windows.Forms.Button regenerateButton;
+        private System.Windows.Forms.ListBox robotsListBox;
     }
 }
 

@@ -17,9 +17,9 @@ namespace Zaggoware.RobotFighter.Environment
 
         internal World World { get; set; }
 
-        public Robot CreateRobot<T>() where T : Robot
+        public Robot CreateRobot<T>(string robotName) where T : Robot
         {
-            return World.CreateRobot<T>();
+            return World.CreateRobot<T>(robotName);
         }
 
         public IEnumerable<RobotDescriptor> GetRobots()

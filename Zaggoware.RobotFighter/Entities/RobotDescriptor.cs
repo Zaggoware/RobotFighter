@@ -7,6 +7,7 @@
             Robot = robot;
         }
 
+        public string Name => Robot.Name;
         public int X => Robot.CurrentTile.X;
         public int Y => Robot.CurrentTile.Y;
         public bool IsAlive => Robot.IsAlive;
