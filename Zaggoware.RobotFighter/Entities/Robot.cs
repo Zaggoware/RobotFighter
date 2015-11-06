@@ -162,6 +162,8 @@ namespace Zaggoware.RobotFighter.Entities
                     FacingDirection = Direction.Down;
                     break;
             }
+
+            Wait(1000);
         }
 
         protected void TurnLeft(int times)
@@ -192,6 +194,8 @@ namespace Zaggoware.RobotFighter.Entities
                     FacingDirection = Direction.Up;
                     break;
             }
+
+            Wait(1000);
         }
 
         protected void TurnRight(int times)

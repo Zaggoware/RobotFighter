@@ -38,7 +38,7 @@ namespace Zaggoware.RobotFighter.Entities
             var threadStart = new ParameterizedThreadStart(r =>
             {
                 var thisRobot = (Robot) r;
-                while (thisRobot.State == RobotState.Alive)
+                while (!game.IsPaused && thisRobot.State == RobotState.Alive)
                 {
                     UpdateRobot(thisRobot);
                     Thread.Sleep(25);

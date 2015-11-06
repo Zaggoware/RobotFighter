@@ -21,8 +21,8 @@ namespace Zaggoware.RobotFighter.FormsUI
         private void CreateGame()
         {
             game = GameManager.StartNewGame();
-            game.WorldDescriptor.CreateRobot<MyRobot>("Robot 1");
-            game.WorldDescriptor.CreateRobot<MyRobot>("Robot 2");
+            game.WorldDescriptor.CreateRobot<MyRobot>("My Robot");
+            game.WorldDescriptor.CreateRobot<OtherRobot>("Other Robot");
         }
 
         private void GameForm_Paint(object sender, PaintEventArgs e)
@@ -136,12 +136,14 @@ namespace Zaggoware.RobotFighter.FormsUI
 
             gameTimer.Enabled = true;
             isPaused = false;
+            game.IsPaused = false;
         }
 
         private void PauseButton_Click(object sender, EventArgs e)
         {
             isPaused = true;
             gameTimer.Enabled = false;
+            game.IsPaused = true;
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)

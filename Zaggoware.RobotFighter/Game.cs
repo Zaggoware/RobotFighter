@@ -9,6 +9,7 @@ namespace Zaggoware.RobotFighter
         {
         }
 
+        public bool IsPaused { get; set; }
         public WorldDescriptor WorldDescriptor { get; private set; }
 
         internal World World { get; private set; }
@@ -27,7 +28,10 @@ namespace Zaggoware.RobotFighter
 
         public void Update()
         {
-            World.Update();
+            if (World != null && !IsPaused)
+            {
+                World.Update();
+            }
         }
 
         public void Dispose()
