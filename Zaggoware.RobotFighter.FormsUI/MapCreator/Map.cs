@@ -45,7 +45,7 @@ namespace Zaggoware.RobotFighter.FormsUI.MapCreator
                 {
                     if (!tiles[y].ContainsKey(x))
                     {
-                        tiles[y].Add(x, Randomizer.Between(0, 10) % 4 == 0);
+                        tiles[y].Add(x, false);
                     }
                 }
             }
@@ -55,5 +55,26 @@ namespace Zaggoware.RobotFighter.FormsUI.MapCreator
         {
             return tiles.ContainsKey(y) && tiles[y].ContainsKey(x) && tiles[y][x];
         }
+
+        public void AddObstacle(int y, int x)
+        {
+            if (!tiles.ContainsKey(y) || !tiles[y].ContainsKey(x))
+            {
+                return;
+            }
+
+            tiles[y][x] = true;
+        }
+
+        public void RemoveObstacle(int y, int x)
+        {
+            if (!tiles.ContainsKey(y) || !tiles[y].ContainsKey(x))
+            {
+                return;
+            }
+
+            tiles[y][x] = false;
+        }
+
     }
 }

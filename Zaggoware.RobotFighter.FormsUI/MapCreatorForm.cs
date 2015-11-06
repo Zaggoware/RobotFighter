@@ -18,22 +18,18 @@ namespace Zaggoware.RobotFighter.FormsUI
 
         private Map map;
         private bool hasUnsavedChanges;
+        private bool isMouseDown;
 
         public MapCreatorForm()
         {
             InitializeComponent();
+
+            NewMap();
         }
 
         private void newToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var width = int.Parse(widthBox.Text);
-            var height = int.Parse(heightBox.Text);
-
-            map = new Map { Width = width, Height = height };
-
-            hasUnsavedChanges = true;
-
-            mapPanel.Invalidate();
+            NewMap();
         }
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -81,7 +77,7 @@ namespace Zaggoware.RobotFighter.FormsUI
                 {
                     if (map.IsObstacle(y, x))
                     {
-                        e.Graphics.FillRectangle(Brushes.Black, x * TileWidth, y * TileHeight, TileWidth, TileHeight);
+                        e.Graphics.FillRectangle(Brushes.Black, x * TileWidth, y * TileHeight, TileWidth + 1, TileHeight + 1);
                     }
                     else
                     {
@@ -95,6 +91,23 @@ namespace Zaggoware.RobotFighter.FormsUI
 
         private void ChangeButton_Click(object sender, EventArgs e)
         {
+            ResizeMap();
+        }
+
+        private void NewMap()
+        {
+            var width = int.Parse(widthBox.Text);
+            var height = int.Parse(heightBox.Text);
+
+            map = new Map { Width = width, Height = height };
+
+            hasUnsavedChanges = true;
+
+            ResizeMap();
+        }
+
+        private void ResizeMap()
+        {
             if (map == null)
             {
                 return;
@@ -102,7 +115,45 @@ namespace Zaggoware.RobotFighter.FormsUI
 
             map.Width = int.Parse(widthBox.Text);
             map.Height = int.Parse(heightBox.Text);
+
+            mapPanel.Size = new Size((map.Width * TileWidth) + 1, (map.Height * TileHeight) + 1);
             mapPanel.Invalidate();
+        }
+
+        private void AddOrRemoveObstacle(MouseEventArgs e)
+        {
+            var x = e.X / TileWidth;
+            var y = e.Y / TileHeight;
+
+            if (e.Button == MouseButtons.Left)
+            {
+                map.AddObstacle(y, x);
+                mapPanel.Invalidate();
+            }
+            else if (e.Button == MouseButtons.Right)
+            {
+                map.RemoveObstacle(y, x);
+                mapPanel.Invalidate();
+            }
+        }
+
+        private void mapPanel_MouseDown(object sender, MouseEventArgs e)
+        {
+            isMouseDown = true;
+            AddOrRemoveObstacle(e);
+        }
+
+        private void mapPanel_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isMouseDown)
+            {
+                AddOrRemoveObstacle(e);
+            }
+        }
+
+        private void mapPanel_MouseUp(object sender, MouseEventArgs e)
+        {
+            isMouseDown = false;
         }
     }
 }

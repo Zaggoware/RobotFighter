@@ -45,13 +45,15 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mapPanel = new System.Windows.Forms.Panel();
+            this.container = new Zaggoware.RobotFighter.FormsUI.Components.DoubleBufferedPanel();
             this.label1 = new System.Windows.Forms.Label();
-            this.widthBox = new System.Windows.Forms.TextBox();
-            this.heightBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.changeButton = new System.Windows.Forms.Button();
+            this.heightBox = new System.Windows.Forms.TextBox();
+            this.mapPanel = new Zaggoware.RobotFighter.FormsUI.Components.DoubleBufferedPanel();
+            this.widthBox = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
+            this.container.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -62,9 +64,9 @@
             this.editToolStripMenuItem,
             this.viewToolStripMenuItem,
             this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Location = new System.Drawing.Point(15, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(712, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(682, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -182,43 +184,37 @@
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
-            // mapPanel
+            // container
             // 
-            this.mapPanel.Location = new System.Drawing.Point(15, 90);
-            this.mapPanel.Name = "mapPanel";
-            this.mapPanel.Size = new System.Drawing.Size(685, 399);
-            this.mapPanel.TabIndex = 1;
-            this.mapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.MapPanel_Paint);
+            this.container.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.container.AutoScroll = true;
+            this.container.Controls.Add(this.label1);
+            this.container.Controls.Add(this.label2);
+            this.container.Controls.Add(this.changeButton);
+            this.container.Controls.Add(this.heightBox);
+            this.container.Controls.Add(this.mapPanel);
+            this.container.Controls.Add(this.widthBox);
+            this.container.Location = new System.Drawing.Point(0, 26);
+            this.container.Name = "container";
+            this.container.Padding = new System.Windows.Forms.Padding(15, 5, 15, 15);
+            this.container.Size = new System.Drawing.Size(713, 586);
+            this.container.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 40);
+            this.label1.Location = new System.Drawing.Point(12, 18);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(52, 13);
             this.label1.TabIndex = 2;
             this.label1.Text = "Map size:";
             // 
-            // widthBox
-            // 
-            this.widthBox.Location = new System.Drawing.Point(15, 64);
-            this.widthBox.Name = "widthBox";
-            this.widthBox.Size = new System.Drawing.Size(49, 20);
-            this.widthBox.TabIndex = 3;
-            this.widthBox.Text = "32";
-            // 
-            // heightBox
-            // 
-            this.heightBox.Location = new System.Drawing.Point(88, 64);
-            this.heightBox.Name = "heightBox";
-            this.heightBox.Size = new System.Drawing.Size(49, 20);
-            this.heightBox.TabIndex = 4;
-            this.heightBox.Text = "32";
-            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(70, 67);
+            this.label2.Location = new System.Drawing.Point(70, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(12, 13);
             this.label2.TabIndex = 5;
@@ -227,7 +223,7 @@
             // changeButton
             // 
             this.changeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeButton.Location = new System.Drawing.Point(143, 59);
+            this.changeButton.Location = new System.Drawing.Point(143, 29);
             this.changeButton.Name = "changeButton";
             this.changeButton.Size = new System.Drawing.Size(59, 29);
             this.changeButton.TabIndex = 6;
@@ -235,25 +231,49 @@
             this.changeButton.UseVisualStyleBackColor = true;
             this.changeButton.Click += new System.EventHandler(this.ChangeButton_Click);
             // 
+            // heightBox
+            // 
+            this.heightBox.Location = new System.Drawing.Point(88, 34);
+            this.heightBox.Name = "heightBox";
+            this.heightBox.Size = new System.Drawing.Size(49, 20);
+            this.heightBox.TabIndex = 4;
+            this.heightBox.Text = "32";
+            // 
+            // mapPanel
+            // 
+            this.mapPanel.Location = new System.Drawing.Point(15, 60);
+            this.mapPanel.Name = "mapPanel";
+            this.mapPanel.Size = new System.Drawing.Size(207, 187);
+            this.mapPanel.TabIndex = 1;
+            this.mapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.MapPanel_Paint);
+            this.mapPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseDown);
+            this.mapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseMove);
+            this.mapPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseUp);
+            // 
+            // widthBox
+            // 
+            this.widthBox.Location = new System.Drawing.Point(15, 34);
+            this.widthBox.Name = "widthBox";
+            this.widthBox.Size = new System.Drawing.Size(49, 20);
+            this.widthBox.TabIndex = 3;
+            this.widthBox.Text = "32";
+            // 
             // MapCreatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(712, 501);
-            this.Controls.Add(this.changeButton);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.heightBox);
-            this.Controls.Add(this.widthBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.mapPanel);
+            this.ClientSize = new System.Drawing.Size(712, 611);
+            this.Controls.Add(this.container);
             this.Controls.Add(this.menuStrip1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MapCreatorForm";
+            this.Padding = new System.Windows.Forms.Padding(15, 0, 15, 15);
             this.Text = "MapCreator";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MapCreator_FormClosing);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.container.ResumeLayout(false);
+            this.container.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -278,11 +298,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem optionsToolStripMenuItem;
-        private System.Windows.Forms.Panel mapPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox widthBox;
         private System.Windows.Forms.TextBox heightBox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button changeButton;
+        private Components.DoubleBufferedPanel mapPanel;
+        private Components.DoubleBufferedPanel container;
     }
 }
