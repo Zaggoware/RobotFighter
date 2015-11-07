@@ -45,10 +45,12 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resizeButton = new System.Windows.Forms.Button();
             this.container = new Zaggoware.RobotFighter.FormsUI.Components.DoubleBufferedPanel();
+            this.nameBox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.changeButton = new System.Windows.Forms.Button();
             this.heightBox = new System.Windows.Forms.TextBox();
             this.mapPanel = new Zaggoware.RobotFighter.FormsUI.Components.DoubleBufferedPanel();
             this.widthBox = new System.Windows.Forms.TextBox();
@@ -87,48 +89,51 @@
             // newToolStripMenuItem
             // 
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.newToolStripMenuItem.Text = "&New";
-            this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
+            this.newToolStripMenuItem.Click += new System.EventHandler(this.NewToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.openToolStripMenuItem.Text = "&Open...";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
             // recentToolStripMenuItem
             // 
+            this.recentToolStripMenuItem.Enabled = false;
             this.recentToolStripMenuItem.Name = "recentToolStripMenuItem";
-            this.recentToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.recentToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.recentToolStripMenuItem.Text = "&Recent";
             // 
             // saveToolStripMenuItem
             // 
+            this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.saveToolStripMenuItem.Text = "&Save";
-            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.SaveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
+            this.saveAsToolStripMenuItem.Enabled = false;
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
-            this.saveAsToolStripMenuItem.Text = "Save &as";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
+            this.saveAsToolStripMenuItem.Text = "Save &as...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.SaveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(109, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(118, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.exitToolStripMenuItem.Text = "&Exit";
-            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -142,12 +147,14 @@
             // 
             // undoToolStripMenuItem
             // 
+            this.undoToolStripMenuItem.Enabled = false;
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.undoToolStripMenuItem.Text = "&Undo";
             // 
             // redoToolStripMenuItem
             // 
+            this.redoToolStripMenuItem.Enabled = false;
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
             this.redoToolStripMenuItem.Text = "&Redo";
@@ -184,15 +191,28 @@
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.optionsToolStripMenuItem.Text = "&Options";
             // 
+            // resizeButton
+            // 
+            this.resizeButton.Location = new System.Drawing.Point(201, 34);
+            this.resizeButton.Name = "resizeButton";
+            this.resizeButton.Size = new System.Drawing.Size(0, 0);
+            this.resizeButton.TabIndex = 3;
+            this.resizeButton.TabStop = false;
+            this.resizeButton.Text = "Resize";
+            this.resizeButton.UseVisualStyleBackColor = true;
+            this.resizeButton.Click += new System.EventHandler(this.ResizeButton_Click);
+            // 
             // container
             // 
             this.container.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.container.AutoScroll = true;
+            this.container.Controls.Add(this.resizeButton);
+            this.container.Controls.Add(this.nameBox);
+            this.container.Controls.Add(this.label3);
             this.container.Controls.Add(this.label1);
             this.container.Controls.Add(this.label2);
-            this.container.Controls.Add(this.changeButton);
             this.container.Controls.Add(this.heightBox);
             this.container.Controls.Add(this.mapPanel);
             this.container.Controls.Add(this.widthBox);
@@ -200,66 +220,76 @@
             this.container.Name = "container";
             this.container.Padding = new System.Windows.Forms.Padding(15, 5, 15, 15);
             this.container.Size = new System.Drawing.Size(713, 586);
-            this.container.TabIndex = 2;
+            this.container.TabIndex = 0;
+            this.container.Visible = false;
+            // 
+            // nameBox
+            // 
+            this.nameBox.Location = new System.Drawing.Point(73, 8);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(122, 20);
+            this.nameBox.TabIndex = 0;
+            this.nameBox.Text = "Map 1";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(15, 37);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(30, 13);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Size:";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 18);
+            this.label1.Location = new System.Drawing.Point(15, 14);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
+            this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 2;
-            this.label1.Text = "Map size:";
+            this.label1.Text = "Name:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(70, 37);
+            this.label2.Location = new System.Drawing.Point(128, 37);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(12, 13);
             this.label2.TabIndex = 5;
             this.label2.Text = "x";
             // 
-            // changeButton
-            // 
-            this.changeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.changeButton.Location = new System.Drawing.Point(143, 29);
-            this.changeButton.Name = "changeButton";
-            this.changeButton.Size = new System.Drawing.Size(59, 29);
-            this.changeButton.TabIndex = 6;
-            this.changeButton.Text = "Change";
-            this.changeButton.UseVisualStyleBackColor = true;
-            this.changeButton.Click += new System.EventHandler(this.ChangeButton_Click);
-            // 
             // heightBox
             // 
-            this.heightBox.Location = new System.Drawing.Point(88, 34);
+            this.heightBox.Location = new System.Drawing.Point(146, 34);
             this.heightBox.Name = "heightBox";
             this.heightBox.Size = new System.Drawing.Size(49, 20);
-            this.heightBox.TabIndex = 4;
+            this.heightBox.TabIndex = 2;
             this.heightBox.Text = "32";
+            this.heightBox.Leave += new System.EventHandler(this.HeightBox_Leave);
             // 
             // mapPanel
             // 
             this.mapPanel.Location = new System.Drawing.Point(15, 60);
             this.mapPanel.Name = "mapPanel";
-            this.mapPanel.Size = new System.Drawing.Size(207, 187);
-            this.mapPanel.TabIndex = 1;
+            this.mapPanel.Size = new System.Drawing.Size(245, 187);
+            this.mapPanel.TabIndex = 10;
             this.mapPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.MapPanel_Paint);
-            this.mapPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseDown);
-            this.mapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseMove);
-            this.mapPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapPanel_MouseUp);
+            this.mapPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.MapPanel_MouseDown);
+            this.mapPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.MapPanel_MouseMove);
+            this.mapPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.MapPanel_MouseUp);
             // 
             // widthBox
             // 
-            this.widthBox.Location = new System.Drawing.Point(15, 34);
+            this.widthBox.Location = new System.Drawing.Point(73, 34);
             this.widthBox.Name = "widthBox";
             this.widthBox.Size = new System.Drawing.Size(49, 20);
-            this.widthBox.TabIndex = 3;
+            this.widthBox.TabIndex = 1;
             this.widthBox.Text = "32";
+            this.widthBox.Leave += new System.EventHandler(this.WidthBox_Leave);
             // 
             // MapCreatorForm
             // 
+            this.AcceptButton = this.resizeButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(712, 611);
@@ -302,8 +332,10 @@
         private System.Windows.Forms.TextBox widthBox;
         private System.Windows.Forms.TextBox heightBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button changeButton;
         private Components.DoubleBufferedPanel mapPanel;
         private Components.DoubleBufferedPanel container;
+        private System.Windows.Forms.TextBox nameBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button resizeButton;
     }
 }

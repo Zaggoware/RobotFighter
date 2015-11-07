@@ -60,6 +60,8 @@
     <Compile Include="MapCreatorForm.Designer.cs">
       <DependentUpon>MapCreatorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MapCreator\TileData.cs" />
+    <Compile Include="MapCreator\MapState.cs" />
     <Compile Include="MapCreator\Map.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
