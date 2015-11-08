@@ -47,6 +47,20 @@ namespace Zaggoware.RobotFighter.FormsUI.MapCreator
             }
         }
 
+        public IEnumerable<TileData> TileData
+        {
+            get
+            {
+                for (var y = 0; y < Height; y++)
+                {
+                    for (var x = 0; x < Width; x++)
+                    {
+                        yield return new TileData(x, y, tiles[y][x]);
+                    }
+                }
+            }
+        }
+
         private int width;
         private int height;
 

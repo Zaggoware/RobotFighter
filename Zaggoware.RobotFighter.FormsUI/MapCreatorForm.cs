@@ -25,7 +25,7 @@ namespace Zaggoware.RobotFighter.FormsUI
         private bool isMouseDown;
         private string fileName;
 
-        private List<MapState> history = new List<MapState>();
+        private MiniMapForm miniMapForm;
 
         public MapCreatorForm()
         {
@@ -33,9 +33,43 @@ namespace Zaggoware.RobotFighter.FormsUI
 
             title = Text;
             //NewMap();
+
+            miniMapForm = new MiniMapForm(map);
+            miniMapForm.Show();
         }
 
         #region Event Handlers
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            var bytes = GC.GetTotalMemory(false);
+            var kilobytes = 0d;
+            var megabytes = 0d;
+            var gigabytes = 0d;
+            var memoryString = bytes.ToString("n0") +" B";
+
+            if (bytes >= 1024)
+            {
+                kilobytes = bytes / 1024;
+                memoryString = kilobytes.ToString("n0") + " KB";
+            }
+
+            if (kilobytes >= 1024)
+            {
+                megabytes = kilobytes / 1024;
+                memoryString = megabytes.ToString("n") + " MB";
+            }
+
+            if (megabytes >= 1024)
+            {
+                gigabytes = megabytes / 1024;
+                memoryString = gigabytes.ToString("n") + "GB";
+            }
+
+
+
+            memoryLabel.Text = memoryString;
+        }
 
         private void NewToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -67,7 +101,6 @@ namespace Zaggoware.RobotFighter.FormsUI
             if (hasUnsavedChanges && !RequestSave())
             {
                 e.Cancel = true;
-
             }
         }
 
@@ -98,24 +131,12 @@ namespace Zaggoware.RobotFighter.FormsUI
 
         private void WidthBox_Leave(object sender, EventArgs e)
         {
-            var width = map.Width;
-
-            int.TryParse(widthBox.Text, out width);
-
-            map.Width = width;
-
-            ResizeMap();
+            resizeButton.PerformClick();
         }
 
         private void HeightBox_Leave(object sender, EventArgs e)
         {
-            var height = map.Height;
-
-            int.TryParse(heightBox.Text, out height);
-
-            map.Height = height;
-
-            ResizeMap();
+            resizeButton.PerformClick();
         }
 
         private void ResizeButton_Click(object sender, EventArgs e)
@@ -130,6 +151,7 @@ namespace Zaggoware.RobotFighter.FormsUI
             map.Height = height;
 
             ResizeMap();
+            miniMapForm.Invalidate();
         }
 
         private void MapPanel_MouseDown(object sender, MouseEventArgs e)
@@ -156,9 +178,7 @@ namespace Zaggoware.RobotFighter.FormsUI
         private void SetTitle()
         {
             Text = (hasUnsavedChanges ? "*" : string.Empty)
-                + (map != null ? map.Name + " - " + title : title);
-
-            
+                + (map != null ? map.Name + " - " + title : title);            
         }
 
         private bool RequestSave()
@@ -182,11 +202,13 @@ namespace Zaggoware.RobotFighter.FormsUI
             if (hasUnsavedChanges && !RequestSave())
             {
                 return;
-            }            
+            }  
 
             map = new Map("Map 1");
             hasUnsavedChanges = true;
             SetTitle();
+
+            miniMapForm.Map = map;
 
             nameBox.Text = map.Name;
             widthBox.Text = map.Width.ToString();
@@ -231,6 +253,8 @@ namespace Zaggoware.RobotFighter.FormsUI
             hasUnsavedChanges = false;
             SetTitle();
 
+            miniMapForm.Map = map;
+
             nameBox.Text = map.Name;
             widthBox.Text = map.Width.ToString();
             heightBox.Text = map.Height.ToString();
@@ -271,6 +295,8 @@ namespace Zaggoware.RobotFighter.FormsUI
             }
 
             map.Save(fileName);
+            hasUnsavedChanges = false;
+            SetTitle();
         }
         
         private void ResizeMap()
@@ -295,15 +321,17 @@ namespace Zaggoware.RobotFighter.FormsUI
             var x = e.X / TileWidth;
             var y = e.Y / TileHeight;
 
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left && !map.IsObstacle(y, x))
             {
                 map.AddObstacle(y, x);
                 mapPanel.Invalidate();
+                miniMapForm.Invalidate();
             }
-            else if (e.Button == MouseButtons.Right)
+            else if (e.Button == MouseButtons.Right && map.IsObstacle(y, x))
             {
                 map.RemoveObstacle(y, x);
                 mapPanel.Invalidate();
+                miniMapForm.Invalidate();
             }
 
             if (!hasUnsavedChanges)
