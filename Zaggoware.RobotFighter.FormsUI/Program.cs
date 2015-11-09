@@ -13,8 +13,8 @@ namespace Zaggoware.RobotFighter.FormsUI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new GameForm());
-            Application.Run(new MapCreatorForm());
+            Application.Run(new GameForm());
+            //Application.Run(new MapCreatorForm());
         }
     }
 }

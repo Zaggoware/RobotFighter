@@ -43,6 +43,7 @@
     <Compile Include="Entities\Direction.cs" />
     <Compile Include="Entities\RobotDescriptor.cs" />
     <Compile Include="Environment\WorldDescriptor.cs" />
+    <Compile Include="Environment\WorldLoader.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="IGame.cs" />
@@ -61,6 +62,14 @@
     <Compile Include="Environment\Tile.cs" />
     <Compile Include="Environment\World.cs" />
     <Compile Include="Randomizer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Maps\Boxes.rfmap">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Maps\Maps.data">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

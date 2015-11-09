@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Zaggoware.RobotFighter.Environment;
 
 namespace Zaggoware.RobotFighter
@@ -7,6 +8,7 @@ namespace Zaggoware.RobotFighter
     {
         internal Game()
         {
+            worldLoader = new WorldLoader(this);
         }
 
         public bool IsPaused { get; set; }
@@ -14,12 +16,12 @@ namespace Zaggoware.RobotFighter
 
         internal World World { get; private set; }
 
+        private WorldLoader worldLoader;
+
         internal void Initialize()
         {
-            World = new World(this, 32, 32);
+            World = worldLoader.Load(worldLoader.Maps.FirstOrDefault());
             WorldDescriptor = new WorldDescriptor(World);
-
-            // TODO: Read/Load/Create World config
         }
 
         internal void Start()
