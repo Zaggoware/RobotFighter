@@ -6,7 +6,7 @@ using Zaggoware.RobotFighter.Items.Weapons;
 
 namespace Zaggoware.RobotFighter.Entities
 {
-    public abstract class Robot : IRobot
+    public abstract class Robot
     {
         protected Robot(string name)
         {
@@ -23,7 +23,7 @@ namespace Zaggoware.RobotFighter.Entities
         public int Health
         {
             get { return health; }
-            internal set
+            private set
             {
                 if (value == health)
                 {
@@ -78,25 +78,25 @@ namespace Zaggoware.RobotFighter.Entities
         private object healthObject;
         private int health;
 
-        public int Attack(Weapon weapon)
+        protected int Attack(Robot target)
         {
-            if (weapon.Inventory?.Robot == null)
+            var damageRate = 7;
+
+            if (Inventory?.CurrentWeapon != null)
+            {
+                damageRate = Inventory.CurrentWeapon.DamageRate;
+            }
+
+            if (!IsInRange(target))
             {
                 return 0;
             }
 
-            var attacker = weapon.Inventory.Robot;
-
-            if (!attacker.IsInRange(this))
-            {
-                return 0;
-            }
-
-            var damage = Randomizer.Between(0, weapon.DamageRate);
+            var damage = Randomizer.Between(0, damageRate);
 
             lock (healthObject)
             {
-                Health -= damage;
+                target.Health -= damage;
             }
 
             return damage;

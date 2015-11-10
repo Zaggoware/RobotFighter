@@ -42,13 +42,13 @@
     <Compile Include="Entities\AttackEvent.cs" />
     <Compile Include="Entities\Direction.cs" />
     <Compile Include="Entities\RobotDescriptor.cs" />
+    <Compile Include="Environment\TileExtensions.cs" />
     <Compile Include="Environment\WorldDescriptor.cs" />
     <Compile Include="Environment\WorldLoader.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="GameManager.cs" />
     <Compile Include="IGame.cs" />
     <Compile Include="Items\Inventory.cs" />
-    <Compile Include="Entities\IRobot.cs" />
     <Compile Include="Items\IItem.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="Items\ItemManager.cs" />

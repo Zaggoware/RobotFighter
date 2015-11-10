@@ -16,6 +16,7 @@ namespace Zaggoware.RobotFighter.TestRobot
 
         protected override void Update()
         {
+            return;
             if (Randomizer.Between(0, 10) % 3 == 0)
             {
                 if (Randomizer.Between(0, 2) % 2 == 0)

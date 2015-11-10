@@ -23,7 +23,7 @@ namespace Zaggoware.RobotFighter.Environment
                 {
                     var isObstacle = Randomizer.Between(0, 10) % 4 == 0;
 
-                    Tiles[x, y] = new Tile(x, y, isObstacle);
+                    Tiles[x, y] = new Tile(this, x, y, isObstacle);
                 }
             }
         }
@@ -78,21 +78,25 @@ namespace Zaggoware.RobotFighter.Environment
 
             if (!newTile.IsObstacle)
             {
+                Tiles[newTile.X, newTile.Y] = Tiles[newTile.X, newTile.Y].UpdateRobot(robot);
                 robot.CurrentTile = newTile;
             }
 
             return newTile != robot.CurrentTile;
         }
 
+        private int _x = -1;
+        private int _y = -1;
+
         public Robot CreateRobot<T>(string robotName) where T : Robot
         {
             var robot = RobotManager.CreateRobot<T>(robotName);
             robot.Spawn(this);
 
-            var x = Randomizer.Between(0, Width - 1);
-            var y = Randomizer.Between(0, Height - 2);
+            var x = _x == -1 ? (_x = Randomizer.Between(0, Width - 1)) : _x + 1;
+            var y = _y == -1 ? (_y = Randomizer.Between(0, Height - 2)) : _y;
 
-            Tiles[x, y] = new Tile(x, y, false);
+            Tiles[x, y] = new Tile(this, x, y, false);
 
             robot.CurrentTile = Tiles[x, y];
 

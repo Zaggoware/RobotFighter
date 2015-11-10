@@ -78,7 +78,7 @@ namespace Zaggoware.RobotFighter.Environment
 
                 foreach (var c in line)
                 {
-                    map.Tiles[x, y] = new Tile(x, y, c == '1');
+                    map.Tiles[x, y] = new Tile(map, x, y, c == '1');
                     x++;
                 }
 

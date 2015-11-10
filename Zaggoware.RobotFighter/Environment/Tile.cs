@@ -5,8 +5,9 @@ namespace Zaggoware.RobotFighter.Environment
 {
     public struct Tile
     {
-        internal Tile(int x, int y, bool isObstacle)
+        internal Tile(World world, int x, int y, bool isObstacle)
         {
+            World = new WorldDescriptor(world);
             X = x;
             Y = y;
             Robot = null;
@@ -14,20 +15,21 @@ namespace Zaggoware.RobotFighter.Environment
             IsObstacle = isObstacle;
         }
 
-        internal Tile(int x, int y, bool isObstacle, Robot robot, Item item)
-            : this(x, y, isObstacle)
+        internal Tile(World world, int x, int y, bool isObstacle, Robot robot, Item item)
+            : this(world, x, y, isObstacle)
         {
             Robot = robot;
             Item = item;
         }
 
+        public WorldDescriptor World { get; private set; }
         public bool IsObstacle { get; }
         public Item Item { get; }
         public Robot Robot { get; }
         public int X { get; }
         public int Y { get; }
 
-        internal static Tile Empty => new Tile(0, 0, false);
+        internal static Tile Empty => new Tile(null, 0, 0, false);
 
         public static bool operator ==(Tile a, Tile b)
         {

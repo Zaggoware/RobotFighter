@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading;
 using Zaggoware.RobotFighter.Entities;
+using Zaggoware.RobotFighter.Environment;
 
 namespace Zaggoware.RobotFighter.TestRobot
 {
@@ -16,19 +16,50 @@ namespace Zaggoware.RobotFighter.TestRobot
 
         protected override void Update()
         {
-            while (!CanMove)
+            Robot robot = null;
+            var dirs = new[] { Direction.Up, Direction.Right, Direction.Down, Direction.Left };
+
+            for (var i = 0; i < 4; i++)
             {
-                if (Randomizer.Between(0, 2) % 2 == 0)
+                for (var j = 0; j < 4; j++)
                 {
-                    TurnRight();
+                    var tile = dirs[i] == dirs[j]
+                        ? InspectTile(dirs[i]) 
+                        : InspectTile(dirs[i] | dirs[j]);
+
+                    if (tile?.Robot != null)
+                    {
+                        robot = tile.Value.Robot;
+                        break;
+                    }
                 }
-                else
+
+                if (robot != null)
                 {
-                    TurnLeft();
+                    break;
                 }
             }
 
-            Move();
+            if (robot != null)
+            {
+                Attack(robot);
+            }
+            else
+            {
+                while (!CanMove)
+                {
+                    if (Randomizer.Between(0, 2) % 2 == 0)
+                    {
+                        TurnRight();
+                    }
+                    else
+                    {
+                        TurnLeft();
+                    }
+                }
+
+                Move();
+            }
         }
     }
 }
