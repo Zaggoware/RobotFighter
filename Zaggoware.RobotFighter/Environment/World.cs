@@ -2,6 +2,7 @@
 
 using Zaggoware.RobotFighter.Entities;
 using Zaggoware.RobotFighter.Items;
+using Zaggoware.RobotFighter.Items.Weapons;
 
 namespace Zaggoware.RobotFighter.Environment
 {
@@ -15,7 +16,7 @@ namespace Zaggoware.RobotFighter.Environment
 
             RobotManager = new RobotManager(game);
             ItemManager = new ItemManager(game);
-            Tiles = new Tile[width, height];
+            Tiles = new Tile[width+1, height+1];
 
             for (var x = 0; x < width; x++)
             {
@@ -29,7 +30,7 @@ namespace Zaggoware.RobotFighter.Environment
         }
 
         internal RobotManager RobotManager { get; }
-        internal ItemManager ItemManager { get; private set; }
+        internal ItemManager ItemManager { get; }
         internal int Width { get; }
         internal int Height { get; }
         internal Tile[,] Tiles { get; }
@@ -79,7 +80,7 @@ namespace Zaggoware.RobotFighter.Environment
             if (!newTile.IsObstacle)
             {
                 Tiles[newTile.X, newTile.Y] = Tiles[newTile.X, newTile.Y].UpdateRobot(robot);
-                robot.CurrentTile = newTile;
+                robot.CurrentTile = Tiles[newTile.X, newTile.Y];
             }
 
             return newTile != robot.CurrentTile;
@@ -88,13 +89,13 @@ namespace Zaggoware.RobotFighter.Environment
         private int _x = -1;
         private int _y = -1;
 
-        public Robot CreateRobot<T>(string robotName) where T : Robot
+        public Robot CreateRobot<T>() where T : Robot
         {
-            var robot = RobotManager.CreateRobot<T>(robotName);
+            var robot = RobotManager.CreateRobot<T>();
             robot.Spawn(this);
 
-            var x = _x == -1 ? (_x = Randomizer.Between(0, Width - 1)) : _x + 1;
-            var y = _y == -1 ? (_y = Randomizer.Between(0, Height - 2)) : _y;
+            var x = _x == -1 ? (_x = Randomizer.Between(1, Width - 1)) : _x + 1;
+            var y = _y == -1 ? (_y = Randomizer.Between(1, Height - 2)) : _y;
 
             Tiles[x, y] = new Tile(this, x, y, false);
 
@@ -106,6 +107,37 @@ namespace Zaggoware.RobotFighter.Environment
         public bool IsObstacle(int x, int y)
         {
             return Tiles[x, y].IsObstacle;
+        }
+
+        public bool HasItem(int x, int y)
+        {
+            return Tiles[x, y].Item != null;
+        }
+
+        public bool IsTileOccupied(int x, int y)
+        {
+            return Tiles[x, y].Robot != null;
+        }
+
+        internal void SpawnItems()
+        {
+            int x, y;
+
+            do
+            {
+                x = Randomizer.Between(0, Width - 1);
+                y = Randomizer.Between(0, Height - 1);
+
+                if (!Tiles[x, y].IsObstacle)
+                {
+                    var weapon = new Weapon("Test Gun", WeaponType.Handgun, 10, 12);
+                    ItemManager.AddItem(weapon);
+
+                    Tiles[x, y] = Tiles[x, y].UpdateItem(weapon);
+                    break;
+                }
+            }
+            while (Tiles[x, y].IsObstacle);
         }
     }
 }

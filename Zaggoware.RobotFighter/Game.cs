@@ -26,6 +26,7 @@ namespace Zaggoware.RobotFighter
 
         internal void Start()
         {
+            World.SpawnItems();
         }
 
         public void Update()

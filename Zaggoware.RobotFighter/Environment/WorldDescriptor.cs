@@ -17,9 +17,9 @@ namespace Zaggoware.RobotFighter.Environment
 
         internal World World { get; set; }
 
-        public Robot CreateRobot<T>(string robotName) where T : Robot
+        public Robot CreateRobot<T>() where T : Robot
         {
-            return World.CreateRobot<T>(robotName);
+            return World.CreateRobot<T>();
         }
 
         public IEnumerable<RobotDescriptor> GetRobots()
@@ -30,6 +30,11 @@ namespace Zaggoware.RobotFighter.Environment
         public bool IsObstacle(int x, int y)
         {
             return World.IsObstacle(x, y);
+        }
+
+        public bool HasItem(int x, int y)
+        {
+            return World.HasItem(x, y);
         }
     }
 }

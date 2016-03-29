@@ -8,17 +8,13 @@ namespace Zaggoware.RobotFighter.Entities
 {
     public abstract class Robot
     {
-        protected Robot(string name)
-        {
-            Name = name;
-        }
-
         public event AttackEventHandler Attacking;
         public event AttackEventHandler BeingAttacked;
 
         public const int FullHealth = 100;
 
-        public string Name { get; private set; }
+        public abstract string Name { get; }
+        public abstract string ColorCode { get; }
 
         public int Health
         {
@@ -55,19 +51,23 @@ namespace Zaggoware.RobotFighter.Entities
                 {
                     case Direction.Up:
                         return CurrentTile.Y > 0
-                               && !world.IsObstacle(CurrentTile.X, CurrentTile.Y - 1);
+                            && !world.IsObstacle(CurrentTile.X, CurrentTile.Y - 1)
+                            && !world.IsTileOccupied(CurrentTile.X, CurrentTile.Y - 1);
 
                     case Direction.Right:
                         return CurrentTile.X < world.Width - 1
-                            && !world.IsObstacle(CurrentTile.X + 1, CurrentTile.Y);
+                            && !world.IsObstacle(CurrentTile.X + 1, CurrentTile.Y)
+                            && !world.IsTileOccupied(CurrentTile.X + 1, CurrentTile.Y);
 
                     case Direction.Down:
                         return CurrentTile.Y < world.Height - 1
-                            && !world.IsObstacle(CurrentTile.X, CurrentTile.Y + 1);
+                            && !world.IsObstacle(CurrentTile.X, CurrentTile.Y + 1)
+                            && !world.IsTileOccupied(CurrentTile.X, CurrentTile.Y + 1);
 
                     case Direction.Left:
                         return CurrentTile.X > 0
-                            && !world.IsObstacle(CurrentTile.X - 1, CurrentTile.Y);
+                            && !world.IsObstacle(CurrentTile.X - 1, CurrentTile.Y)
+                            && !world.IsTileOccupied(CurrentTile.X - 1, CurrentTile.Y);
                 }
 
                 return false;
@@ -75,16 +75,30 @@ namespace Zaggoware.RobotFighter.Entities
         }
 
         private World world;
-        private object healthObject;
+        private object healthObject = new object();
         private int health;
+        private int attackCooldown = 0;
 
         protected int Attack(Robot target)
         {
+            if (target == this)
+            {
+                return 0;
+            }
+
+            if (attackCooldown > 0)
+            {
+                return 0;
+            }
+
+            // Default values when no weapon is held.
             var damageRate = 7;
+            var cooldown = 50;
 
             if (Inventory?.CurrentWeapon != null)
             {
                 damageRate = Inventory.CurrentWeapon.DamageRate;
+                cooldown = cooldown - Inventory.CurrentWeapon.SpeedRate;
             }
 
             if (!IsInRange(target))
@@ -98,6 +112,8 @@ namespace Zaggoware.RobotFighter.Entities
             {
                 target.Health -= damage;
             }
+
+            attackCooldown = cooldown;
 
             return damage;
         }
@@ -113,12 +129,18 @@ namespace Zaggoware.RobotFighter.Entities
 
         internal void Update(RobotManager manager)
         {
+            if (attackCooldown > 0)
+            {
+                attackCooldown--;
+            }
+
             Update();
         }
 
         internal bool IsInRange(Robot target)
         {
-            return false;
+            return Math.Abs(CurrentTile.X - target.CurrentTile.X) <= 1 
+                && Math.Abs(CurrentTile.Y - target.CurrentTile.Y) <= 1;
         }
 
         protected abstract void Spawn();
@@ -131,13 +153,15 @@ namespace Zaggoware.RobotFighter.Entities
 
         protected int Move(int steps)
         {
-            if (!CanMove)
+            for (int i = 0; i < steps; i++)
             {
-                return 0;
+                if (!CanMove)
+                {
+                    return 0;
+                }
+                world.MoveRobot(this);
+                Wait(1000);
             }
-
-            world.MoveRobot(this);
-            Wait(1000);
 
             return steps;
         }

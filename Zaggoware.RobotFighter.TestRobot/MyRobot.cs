@@ -1,18 +1,16 @@
-﻿using System;
-using Zaggoware.RobotFighter.Entities;
-using Zaggoware.RobotFighter.Environment;
+﻿using Zaggoware.RobotFighter.Entities;
 
 namespace Zaggoware.RobotFighter.TestRobot
 {
     public class MyRobot : Robot
     {
-        public MyRobot(string name) : base(name)
-        {
-        }
+        public override string Name => "My Robot";
+        public override string ColorCode => "#880000";
 
         protected override void Spawn()
         {
         }
+
 
         protected override void Update()
         {
@@ -27,7 +25,7 @@ namespace Zaggoware.RobotFighter.TestRobot
                         ? InspectTile(dirs[i]) 
                         : InspectTile(dirs[i] | dirs[j]);
 
-                    if (tile?.Robot != null)
+                    if (tile?.Robot != null && tile?.Robot != this)
                     {
                         robot = tile.Value.Robot;
                         break;
@@ -40,7 +38,7 @@ namespace Zaggoware.RobotFighter.TestRobot
                 }
             }
 
-            if (robot != null)
+            if (robot != null && robot.IsAlive)
             {
                 Attack(robot);
             }

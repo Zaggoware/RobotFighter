@@ -65,11 +65,12 @@
             // 
             // loggerBox
             // 
-            this.loggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.loggerBox.Location = new System.Drawing.Point(620, 12);
+            this.loggerBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.loggerBox.Location = new System.Drawing.Point(541, 12);
             this.loggerBox.Multiline = true;
             this.loggerBox.Name = "loggerBox";
-            this.loggerBox.Size = new System.Drawing.Size(144, 168);
+            this.loggerBox.Size = new System.Drawing.Size(198, 168);
             this.loggerBox.TabIndex = 2;
             // 
             // regenerateButton
@@ -84,17 +85,17 @@
             // 
             // robotsListBox
             // 
-            this.robotsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.robotsListBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.robotsListBox.FormattingEnabled = true;
-            this.robotsListBox.Location = new System.Drawing.Point(620, 186);
+            this.robotsListBox.Location = new System.Drawing.Point(541, 186);
             this.robotsListBox.Name = "robotsListBox";
-            this.robotsListBox.Size = new System.Drawing.Size(144, 173);
+            this.robotsListBox.Size = new System.Drawing.Size(198, 173);
             this.robotsListBox.TabIndex = 4;
             // 
             // mapCreatorButton
             // 
-            this.mapCreatorButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.mapCreatorButton.Location = new System.Drawing.Point(515, 12);
+            this.mapCreatorButton.Location = new System.Drawing.Point(436, 12);
             this.mapCreatorButton.Name = "mapCreatorButton";
             this.mapCreatorButton.Size = new System.Drawing.Size(99, 23);
             this.mapCreatorButton.TabIndex = 5;
@@ -106,7 +107,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(776, 596);
+            this.ClientSize = new System.Drawing.Size(751, 596);
             this.Controls.Add(this.mapCreatorButton);
             this.Controls.Add(this.robotsListBox);
             this.Controls.Add(this.regenerateButton);

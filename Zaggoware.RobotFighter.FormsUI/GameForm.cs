@@ -21,8 +21,8 @@ namespace Zaggoware.RobotFighter.FormsUI
         private void CreateGame()
         {
             game = GameManager.StartNewGame();
-            game.WorldDescriptor.CreateRobot<MyRobot>("My Robot");
-            game.WorldDescriptor.CreateRobot<OtherRobot>("Other Robot");
+            game.WorldDescriptor.CreateRobot<MyRobot>();
+            game.WorldDescriptor.CreateRobot<OtherRobot>();
         }
 
         private void GameForm_Paint(object sender, PaintEventArgs e)
@@ -36,6 +36,28 @@ namespace Zaggoware.RobotFighter.FormsUI
             const int offsetY = 50;
             const int tileSize = 16;
 
+            foreach (var robot in game.WorldDescriptor.GetRobots())
+            {
+                if (!robot.IsAlive || robot.X < 0 || robot.Y < 0 || robot.X >= game.WorldDescriptor.Width
+                    || robot.Y >= game.WorldDescriptor.Height)
+                {
+                    continue;
+                }
+
+                for (var z = 0; z <= 8; z++)
+                {
+                    var rx = (z >= 1 && z <= 3 ? 1 : (z >= 5 && z <= 8 ? -1 : 0));
+                    var ry = (z == 0 || z == 1 || z == 8 ? -1 : (z >= 3 & z <= 5 ? 1 : 0));
+
+                    e.Graphics.FillRectangle(
+                        new SolidBrush(ColorTranslator.FromHtml("#CC999999")), 
+                        offsetX + ((robot.X + rx) * tileSize),
+                        offsetY + ((robot.Y + ry) * tileSize),
+                        tileSize,
+                        tileSize);
+                }
+            }
+
             for (var x = 0; x < game.WorldDescriptor.Width; x++)
             {
                 for (var y = 0; y < game.WorldDescriptor.Height; y++)
@@ -46,6 +68,11 @@ namespace Zaggoware.RobotFighter.FormsUI
                         offsetY + (y * tileSize),
                         tileSize,
                         tileSize);
+
+                    if (game.WorldDescriptor.HasItem(x, y))
+                    {
+                        e.Graphics.FillEllipse(Brushes.Red, offsetX + (x * tileSize), offsetY + (y * tileSize), tileSize, tileSize);
+                    }
 
                     if (game.WorldDescriptor.IsObstacle(x, y))
                     {
@@ -68,7 +95,7 @@ namespace Zaggoware.RobotFighter.FormsUI
                 }
 
                 e.Graphics.FillRectangle(
-                    Brushes.Brown,
+                    new SolidBrush(ColorTranslator.FromHtml(robot.ColorCode)), 
                     offsetX + (robot.X * tileSize),
                     offsetY + (robot.Y * tileSize),
                     tileSize,
@@ -163,7 +190,7 @@ namespace Zaggoware.RobotFighter.FormsUI
 
             foreach (var robot in game.WorldDescriptor.GetRobots())
             {
-                robotsListBox.Items.Add($"Robot: {robot.Name} (x: {robot.X}, y: {robot.Y})");
+                robotsListBox.Items.Add($"Robot: {robot.Name} (x: {robot.X}, y: {robot.Y}, health: {robot.Health}, color: {robot.ColorCode})");
             }
 
             Invalidate();

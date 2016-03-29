@@ -6,9 +6,8 @@ namespace Zaggoware.RobotFighter.TestRobot
 {
     public class OtherRobot : Robot
     {
-        public OtherRobot(string name) : base(name)
-        {
-        }
+        public override string Name => "Other Robot";
+        public override string ColorCode => "#000088";
 
         protected override void Spawn()
         {
@@ -16,7 +15,6 @@ namespace Zaggoware.RobotFighter.TestRobot
 
         protected override void Update()
         {
-            return;
             if (Randomizer.Between(0, 10) % 3 == 0)
             {
                 if (Randomizer.Between(0, 2) % 2 == 0)

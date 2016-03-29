@@ -22,9 +22,9 @@ namespace Zaggoware.RobotFighter.Entities
         private readonly Game game;
         private readonly Dictionary<Robot, Thread> robots = new Dictionary<Robot, Thread>();
 
-        public Robot CreateRobot<T>(string name) where T : Robot
+        public Robot CreateRobot<T>() where T : Robot
         {
-            var robot = (T) Activator.CreateInstance(typeof(T), name);
+            var robot = (T) Activator.CreateInstance(typeof(T));
 
             if (robot.State == RobotState.Disconnected || robot.State == RobotState.Alive)
             {
